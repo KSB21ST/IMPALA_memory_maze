@@ -1,0 +1,1 @@
+{"step": 22400, "total_loss": 41.3677978515625, "mean_episode_return": NaN, "pg_loss": 39.169883728027344, "baseline_loss": 7.930588245391846, "entropy_loss": -5.7326741218566895, "_tick": 7, "_time": 1682839275.9566371, "_timestamp": 1682839275.9570808, "_runtime": 76.39609575271606, "_step": 22400, "_wandb": {"runtime": 77}}

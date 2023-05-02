@@ -1,0 +1,25 @@
+2023-04-30 16:19:59,549 INFO    MainThread:4140716 [wandb_setup.py:_flush():76] Configure stats pid to 4140716
+2023-04-30 16:19:59,549 INFO    MainThread:4140716 [wandb_setup.py:_flush():76] Loading settings from /home/sbkim/.config/wandb/settings
+2023-04-30 16:19:59,549 INFO    MainThread:4140716 [wandb_setup.py:_flush():76] Loading settings from /home/sbkim/torchbeast/wandb/settings
+2023-04-30 16:19:59,549 INFO    MainThread:4140716 [wandb_setup.py:_flush():76] Loading settings from environment variables: {'mode': 'online', 'api_key': '***REDACTED***'}
+2023-04-30 16:19:59,549 WARNING MainThread:4140716 [wandb_setup.py:_flush():76] Could not find program at -m torchbeast.monobeast
+2023-04-30 16:19:59,549 INFO    MainThread:4140716 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': None, 'program': '-m torchbeast.monobeast'}
+2023-04-30 16:19:59,549 INFO    MainThread:4140716 [wandb_init.py:_log_setup():507] Logging user logs to /home/sbkim/torchbeast/wandb/run-20230430_161959-0sir640d/logs/debug.log
+2023-04-30 16:19:59,550 INFO    MainThread:4140716 [wandb_init.py:_log_setup():508] Logging internal logs to /home/sbkim/torchbeast/wandb/run-20230430_161959-0sir640d/logs/debug-internal.log
+2023-04-30 16:19:59,550 INFO    MainThread:4140716 [wandb_init.py:init():547] calling init triggers
+2023-04-30 16:19:59,550 INFO    MainThread:4140716 [wandb_init.py:init():555] wandb.init called with sweep_config: {}
+config: {'env': 'memory_maze:MemoryMaze-9x9-ExtraObs-v0', 'mode': 'train', 'xpid': None, 'disable_checkpoint': False, 'savedir': '~/logs/memory_maze', 'num_actors': 30, 'total_steps': 100000000, 'batch_size': 32, 'unroll_length': 100, 'num_buffers': None, 'num_learner_threads': 2, 'disable_cuda': False, 'gpu_num': '1, 2, 3', 'use_lstm': True, 'entropy_cost': 0.001, 'baseline_cost': 0.5, 'discounting': 0.99, 'reward_clipping': 'abs_one', 'learning_rate': 0.0002, 'alpha': 0.99, 'momentum': 0, 'epsilon': 1e-07, 'grad_norm_clipping': 40.0}
+2023-04-30 16:19:59,550 INFO    MainThread:4140716 [wandb_init.py:init():595] starting backend
+2023-04-30 16:19:59,550 INFO    MainThread:4140716 [wandb_init.py:init():599] setting up manager
+2023-04-30 16:19:59,555 INFO    MainThread:4140716 [backend.py:_multiprocessing_setup():108] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2023-04-30 16:19:59,560 INFO    MainThread:4140716 [wandb_init.py:init():605] backend started and connected
+2023-04-30 16:19:59,566 INFO    MainThread:4140716 [wandb_init.py:init():695] updated telemetry
+2023-04-30 16:19:59,592 INFO    MainThread:4140716 [wandb_init.py:init():732] communicating run to backend with 60.0 second timeout
+2023-04-30 16:20:00,364 INFO    MainThread:4140716 [wandb_run.py:_on_init():2176] communicating current version
+2023-04-30 16:20:00,478 INFO    MainThread:4140716 [wandb_run.py:_on_init():2185] got version response 
+2023-04-30 16:20:00,478 INFO    MainThread:4140716 [wandb_init.py:init():782] starting run threads in backend
+2023-04-30 16:20:03,491 INFO    MainThread:4140716 [wandb_run.py:_console_start():2157] atexit reg
+2023-04-30 16:20:03,492 INFO    MainThread:4140716 [wandb_run.py:_redirect():2012] redirect: SettingsConsole.WRAP_RAW
+2023-04-30 16:20:03,493 INFO    MainThread:4140716 [wandb_run.py:_redirect():2077] Wrapping output streams.
+2023-04-30 16:20:03,493 INFO    MainThread:4140716 [wandb_run.py:_redirect():2102] Redirects installed.
+2023-04-30 16:20:03,494 INFO    MainThread:4140716 [wandb_init.py:init():824] run started, returning control to user process

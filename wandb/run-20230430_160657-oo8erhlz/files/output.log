@@ -1,0 +1,275 @@
+[DEBUG:4139973 cmd:982 2023-04-30 16:07:01,174] Popen(['git', 'cat-file', '--batch-check'], cwd=/home/sbkim/torchbeast, universal_newlines=False, shell=None, istream=<valid stream>)
+[DEBUG:4139973 cmd:982 2023-04-30 16:07:01,199] Popen(['git', 'diff', '--cached', '--abbrev=40', '--full-index', '--raw'], cwd=/home/sbkim/torchbeast, universal_newlines=False, shell=None, istream=None)
+[DEBUG:4139973 cmd:982 2023-04-30 16:07:01,221] Popen(['git', 'diff', '--abbrev=40', '--full-index', '--raw'], cwd=/home/sbkim/torchbeast, universal_newlines=False, shell=None, istream=None)
+Creating log directory: /home/sbkim/logs/memory_maze/torchbeast-20230430-160701
+[INFO:4139973 file_writer:104 2023-04-30 16:07:01,242] Creating log directory: /home/sbkim/logs/memory_maze/torchbeast-20230430-160701
+Symlinked log directory: /home/sbkim/logs/memory_maze/latest
+[INFO:4139973 file_writer:117 2023-04-30 16:07:01,244] Symlinked log directory: /home/sbkim/logs/memory_maze/latest
+Saving arguments to /home/sbkim/logs/memory_maze/torchbeast-20230430-160701/meta.json
+[INFO:4139973 file_writer:129 2023-04-30 16:07:01,245] Saving arguments to /home/sbkim/logs/memory_maze/torchbeast-20230430-160701/meta.json
+Saving messages to /home/sbkim/logs/memory_maze/torchbeast-20230430-160701/out.log
+[INFO:4139973 file_writer:137 2023-04-30 16:07:01,246] Saving messages to /home/sbkim/logs/memory_maze/torchbeast-20230430-160701/out.log
+Saving logs data to /home/sbkim/logs/memory_maze/torchbeast-20230430-160701/logs.csv
+[INFO:4139973 file_writer:147 2023-04-30 16:07:01,247] Saving logs data to /home/sbkim/logs/memory_maze/torchbeast-20230430-160701/logs.csv
+Saving logs' fields to /home/sbkim/logs/memory_maze/torchbeast-20230430-160701/fields.csv
+[INFO:4139973 file_writer:148 2023-04-30 16:07:01,247] Saving logs' fields to /home/sbkim/logs/memory_maze/torchbeast-20230430-160701/fields.csv
+[INFO:4139973 monobeast:351 2023-04-30 16:07:01,295] Using CUDA.
+[INFO:4139973 __init__:85 2023-04-30 16:07:01,321] MUJOCO_GL=egl, attempting to import specified OpenGL backend.
+[DEBUG:4139973 ctypesloader:65 2023-04-30 16:07:01,347] Loaded libEGL.so => libEGL.so.1 <CDLL 'libEGL.so.1', handle 6a258c0 at 0x7fa7d8051a90>
+[DEBUG:4139973 ctypesloader:65 2023-04-30 16:07:01,348] Loaded libOpenGL.so => libOpenGL.so.0 <CDLL 'libOpenGL.so.0', handle 6a28b20 at 0x7fa7d8051d10>
+[INFO:4139973 acceleratesupport:17 2023-04-30 16:07:01,350] No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+[DEBUG:4139973 ctypesloader:65 2023-04-30 16:07:01,362] Loaded libOpenGL.so => libOpenGL.so.0 <CDLL 'libOpenGL.so.0', handle 6a28b20 at 0x7fa7c4ddb850>
+[DEBUG:4139973 ctypesloader:65 2023-04-30 16:07:01,411] Loaded libOpenGL.so => libOpenGL.so.0 <CDLL 'libOpenGL.so.0', handle 6a28b20 at 0x7fa7c14c50d0>
+[INFO:4139973 __init__:31 2023-04-30 16:07:01,412] MuJoCo library version is: 2.3.5
+[DEBUG:4139973 base:52 2023-04-30 16:07:02,782] Using render executor class: PassthroughRenderExecutor
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+(3, 64, 64) 6
+[INFO:4139973 monobeast:431 2023-04-30 16:07:59,255] # Step	total_loss	mean_episode_return	pg_loss	baseline_loss	entropy_loss
+Updated log fields: ['_tick', '_time', 'step', 'total_loss', 'mean_episode_return', 'pg_loss', 'baseline_loss', 'entropy_loss']
+[INFO:4139973 file_writer:189 2023-04-30 16:08:04,187] Updated log fields: ['_tick', '_time', 'step', 'total_loss', 'mean_episode_return', 'pg_loss', 'baseline_loss', 'entropy_loss']
+[INFO:4139973 monobeast:514 2023-04-30 16:08:04,260] Steps 3200 @ 639.7 SPS. Loss -43.157257. Stats:
+{'baseline_loss': 0.04105842113494873,
+ 'entropy_loss': -5.732452392578125,
+ 'episode_returns': (),
+ 'mean_episode_return': nan,
+ 'pg_loss': -37.46586227416992,
+ 'total_loss': -43.157257080078125}
+[INFO:4139973 monobeast:514 2023-04-30 16:08:09,266] Steps 12800 @ 1918.1 SPS. Loss 114.252838. Stats:
+{'baseline_loss': 15.335187911987305,
+ 'entropy_loss': -5.732437610626221,
+ 'episode_returns': (),
+ 'mean_episode_return': nan,
+ 'pg_loss': 104.65008544921875,
+ 'total_loss': 114.25283813476562}
+[INFO:4139973 monobeast:514 2023-04-30 16:08:14,272] Steps 22400 @ 1918.1 SPS. Loss -102.901978. Stats:
+{'baseline_loss': 0.2852635383605957,
+ 'entropy_loss': -5.732404708862305,
+ 'episode_returns': (),
+ 'mean_episode_return': nan,
+ 'pg_loss': -97.454833984375,
+ 'total_loss': -102.9019775390625}
+[INFO:4139973 monobeast:514 2023-04-30 16:08:19,277] Steps 25600 @ 639.6 SPS. Loss -83.511887. Stats:
+{'baseline_loss': 0.18540188670158386,
+ 'entropy_loss': -5.732406139373779,
+ 'episode_returns': (),
+ 'mean_episode_return': nan,
+ 'pg_loss': -77.96488189697266,
+ 'total_loss': -83.51188659667969}
+[INFO:4139973 monobeast:514 2023-04-30 16:08:24,284] Steps 28800 @ 639.4 SPS. Loss -114.373184. Return per episode: 0.1. Stats:
+{'baseline_loss': 0.35368114709854126,
+ 'entropy_loss': -5.732392311096191,
+ 'episode_returns': (0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     1.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     1.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0),
+ 'mean_episode_return': 0.1111111119389534,
+ 'pg_loss': -108.99447631835938,
+ 'total_loss': -114.37318420410156}
+[INFO:4139973 monobeast:514 2023-04-30 16:08:29,290] Steps 38400 @ 1918.1 SPS. Loss -9.722402. Stats:
+{'baseline_loss': 0.0019708829931914806,
+ 'entropy_loss': -5.732234954833984,
+ 'episode_returns': (),
+ 'mean_episode_return': nan,
+ 'pg_loss': -3.9921374320983887,
+ 'total_loss': -9.72240161895752}
+[INFO:4139973 monobeast:514 2023-04-30 16:08:34,296] Steps 44800 @ 1278.7 SPS. Loss -9.038686. Stats:
+{'baseline_loss': 0.0014874613843858242,
+ 'entropy_loss': -5.732119083404541,
+ 'episode_returns': (),
+ 'mean_episode_return': nan,
+ 'pg_loss': -3.308053970336914,
+ 'total_loss': -9.03868579864502}
+[INFO:4139973 monobeast:514 2023-04-30 16:08:39,302] Steps 54400 @ 1918.0 SPS. Loss -29.146357. Stats:
+{'baseline_loss': 0.01741792820394039,
+ 'entropy_loss': -5.731971740722656,
+ 'episode_returns': (),
+ 'mean_episode_return': nan,
+ 'pg_loss': -23.43180274963379,
+ 'total_loss': -29.1463565826416}
+[INFO:4139973 monobeast:514 2023-04-30 16:08:44,309] Steps 57600 @ 639.3 SPS. Loss -47.899357. Return per episode: 0.3. Stats:
+{'baseline_loss': 0.05985810235142708,
+ 'entropy_loss': -5.731895923614502,
+ 'episode_returns': (0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0),
+ 'mean_episode_return': 0.2857142984867096,
+ 'pg_loss': -42.227317810058594,
+ 'total_loss': -47.899356842041016}
+[INFO:4139973 monobeast:514 2023-04-30 16:08:49,316] Steps 64000 @ 1278.7 SPS. Loss 65.417755. Return per episode: 0.3. Stats:
+{'baseline_loss': 9.88272762298584,
+ 'entropy_loss': -5.731758117675781,
+ 'episode_returns': (1.0, 0.0, 0.0),
+ 'mean_episode_return': 0.3333333432674408,
+ 'pg_loss': 61.266788482666016,
+ 'total_loss': 65.41775512695312}
+[INFO:4139973 monobeast:514 2023-04-30 16:08:54,322] Steps 70400 @ 1278.7 SPS. Loss -42.606735. Stats:
+{'baseline_loss': 0.04208268225193024,
+ 'entropy_loss': -5.731759071350098,
+ 'episode_returns': (),
+ 'mean_episode_return': nan,
+ 'pg_loss': -36.91706085205078,
+ 'total_loss': -42.60673522949219}
+[INFO:4139973 monobeast:514 2023-04-30 16:08:59,328] Steps 80000 @ 1918.1 SPS. Loss 62.472500. Stats:
+{'baseline_loss': 9.497339248657227,
+ 'entropy_loss': -5.731648921966553,
+ 'episode_returns': (),
+ 'mean_episode_return': nan,
+ 'pg_loss': 58.706809997558594,
+ 'total_loss': 62.47249984741211}
+[INFO:4139973 monobeast:514 2023-04-30 16:09:04,334] Steps 86400 @ 1278.7 SPS. Loss -45.272758. Return per episode: 0.0. Stats:
+{'baseline_loss': 0.050369225442409515,
+ 'entropy_loss': -5.731434345245361,
+ 'episode_returns': (0.0, 0.0),
+ 'mean_episode_return': 0.0,
+ 'pg_loss': -39.59169387817383,
+ 'total_loss': -45.27275848388672}
+[INFO:4139973 monobeast:514 2023-04-30 16:09:09,341] Steps 89600 @ 639.3 SPS. Loss -64.071053. Return per episode: 0.1. Stats:
+{'baseline_loss': 0.10457951575517654,
+ 'entropy_loss': -5.731332778930664,
+ 'episode_returns': (1.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     1.0,
+                     0.0,
+                     0.0,
+                     0.0),
+ 'mean_episode_return': 0.13333334028720856,
+ 'pg_loss': -58.444297790527344,
+ 'total_loss': -64.07105255126953}
+[INFO:4139973 monobeast:514 2023-04-30 16:09:14,347] Steps 99200 @ 1918.1 SPS. Loss -16.605492. Stats:
+{'baseline_loss': 0.004680716898292303,
+ 'entropy_loss': -5.731029510498047,
+ 'episode_returns': (),
+ 'mean_episode_return': nan,
+ 'pg_loss': -10.879141807556152,
+ 'total_loss': -16.605491638183594}
+[INFO:4139973 monobeast:514 2023-04-30 16:09:19,353] Steps 105600 @ 1278.7 SPS. Loss 62.618259. Stats:
+{'baseline_loss': 6.513603210449219,
+ 'entropy_loss': -5.730862140655518,
+ 'episode_returns': (),
+ 'mean_episode_return': nan,
+ 'pg_loss': 61.83552169799805,
+ 'total_loss': 62.61825942993164}
+[INFO:4139973 monobeast:514 2023-04-30 16:09:29,346] Steps 112000 @ 640.5 SPS. Loss 6.480162. Stats:
+{'baseline_loss': 0.00560317188501358,
+ 'entropy_loss': -5.730724811553955,
+ 'episode_returns': (),
+ 'mean_episode_return': nan,
+ 'pg_loss': 12.205284118652344,
+ 'total_loss': 6.480162143707275}
+[INFO:4139973 monobeast:514 2023-04-30 16:09:34,353] Steps 118400 @ 1278.7 SPS. Loss 53.467583. Return per episode: 0.0. Stats:
+{'baseline_loss': 4.64766788482666,
+ 'entropy_loss': -5.730607509613037,
+ 'episode_returns': (0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
+ 'mean_episode_return': 0.0,
+ 'pg_loss': 54.55052185058594,
+ 'total_loss': 53.46758270263672}
+[INFO:4139973 monobeast:514 2023-04-30 16:09:39,360] Steps 124800 @ 1278.7 SPS. Loss -3.728753. Return per episode: 0.2. Stats:
+{'baseline_loss': 0.0019510956481099129,
+ 'entropy_loss': -5.730528354644775,
+ 'episode_returns': (1.0, 0.0, 0.0, 0.0),
+ 'mean_episode_return': 0.25,
+ 'pg_loss': 1.999824047088623,
+ 'total_loss': -3.7287533283233643}
+[INFO:4139973 monobeast:514 2023-04-30 16:09:44,365] Steps 131200 @ 1279.2 SPS. Loss 59.228287. Stats:
+{'baseline_loss': 7.366960525512695,
+ 'entropy_loss': -5.730438709259033,
+ 'episode_returns': (),
+ 'mean_episode_return': nan,
+ 'pg_loss': 57.59176254272461,
+ 'total_loss': 59.22828674316406}
+[INFO:4139973 monobeast:514 2023-04-30 16:09:49,372] Steps 140800 @ 1918.0 SPS. Loss -40.073967. Stats:
+{'baseline_loss': 0.035581231117248535,
+ 'entropy_loss': -5.730603218078613,
+ 'episode_returns': (),
+ 'mean_episode_return': nan,
+ 'pg_loss': -34.378944396972656,
+ 'total_loss': -40.07396697998047}
+[INFO:4139973 monobeast:514 2023-04-30 16:09:54,377] Steps 147200 @ 1279.3 SPS. Loss 27.823433. Return per episode: 0.0. Stats:
+{'baseline_loss': 8.241130828857422,
+ 'entropy_loss': -5.730727672576904,
+ 'episode_returns': (0.0, 0.0),
+ 'mean_episode_return': 0.0,
+ 'pg_loss': 25.31302833557129,
+ 'total_loss': 27.82343292236328}
+[INFO:4139973 monobeast:514 2023-04-30 16:09:59,383] Steps 150400 @ 639.3 SPS. Loss -82.715454. Return per episode: 0.1. Stats:
+{'baseline_loss': 1.894718885421753,
+ 'entropy_loss': -5.730739593505859,
+ 'episode_returns': (0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     0.0,
+                     1.0),
+ 'mean_episode_return': 0.0714285746216774,
+ 'pg_loss': -78.87943267822266,
+ 'total_loss': -82.7154541015625}
+[INFO:4139973 monobeast:514 2023-04-30 16:10:04,389] Steps 160000 @ 1918.4 SPS. Loss 21.932766. Return per episode: 0.0. Stats:
+{'baseline_loss': 7.687361240386963,
+ 'entropy_loss': -5.730727195739746,
+ 'episode_returns': (0.0,),
+ 'mean_episode_return': 0.0,
+ 'pg_loss': 19.976131439208984,
+ 'total_loss': 21.93276596069336}
+[INFO:4139973 monobeast:514 2023-04-30 16:10:09,395] Steps 166400 @ 1278.7 SPS. Loss -41.192322. Stats:
+{'baseline_loss': 0.038183487951755524,
+ 'entropy_loss': -5.730811595916748,
+ 'episode_returns': (),
+ 'mean_episode_return': nan,
+ 'pg_loss': -35.49969482421875,
+ 'total_loss': -41.19232177734375}
+[INFO:4139973 monobeast:514 2023-04-30 16:10:14,401] Steps 172800 @ 1278.7 SPS. Loss 61.454773. Return per episode: 0.0. Stats:
+{'baseline_loss': 8.476577758789062,
+ 'entropy_loss': -5.730881214141846,
+ 'episode_returns': (0.0,),
+ 'mean_episode_return': 0.0,
+ 'pg_loss': 58.709075927734375,
+ 'total_loss': 61.45477294921875}
+[INFO:4139973 monobeast:514 2023-04-30 16:10:19,409] Steps 179200 @ 1278.7 SPS. Loss -22.694025. Return per episode: 0.1. Stats:
+{'baseline_loss': 0.009654193185269833,
+ 'entropy_loss': -5.730848789215088,
+ 'episode_returns': (0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0),
+ 'mean_episode_return': 0.10000000149011612,
+ 'pg_loss': -16.97283172607422,
+ 'total_loss': -22.69402503967285}
+[INFO:4139973 monobeast:514 2023-04-30 16:10:24,416] Steps 185600 @ 1278.7 SPS. Loss 90.204666. Return per episode: 0.4. Stats:
+{'baseline_loss': 9.325447082519531,
+ 'entropy_loss': -5.730806827545166,
+ 'episode_returns': (1.0, 0.0, 0.0, 1.0, 0.0),
+ 'mean_episode_return': 0.4000000059604645,
+ 'pg_loss': 86.61002349853516,
+ 'total_loss': 90.20466613769531}
+[INFO:4139973 monobeast:514 2023-04-30 16:10:29,422] Steps 195200 @ 1918.1 SPS. Loss -9.274293. Stats:
+{'baseline_loss': 0.0008985883905552328,
+ 'entropy_loss': -5.730739116668701,
+ 'episode_returns': (),
+ 'mean_episode_return': nan,
+ 'pg_loss': -3.544452428817749,

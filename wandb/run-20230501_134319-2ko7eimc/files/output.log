@@ -1,0 +1,26 @@
+[INFO:4186705 __init__:85 2023-05-01 13:43:26,097] MUJOCO_GL=egl, attempting to import specified OpenGL backend.
+[DEBUG:4186705 ctypesloader:65 2023-05-01 13:43:26,129] Loaded libEGL.so => libEGL.so.1 <CDLL 'libEGL.so.1', handle 64d8aa0 at 0x7f7adc07ae10>
+[DEBUG:4186705 ctypesloader:65 2023-05-01 13:43:26,131] Loaded libOpenGL.so => libOpenGL.so.0 <CDLL 'libOpenGL.so.0', handle 64dbd00 at 0x7f7adc082410>
+[INFO:4186705 acceleratesupport:17 2023-05-01 13:43:26,135] No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+[DEBUG:4186705 ctypesloader:65 2023-05-01 13:43:26,158] Loaded libOpenGL.so => libOpenGL.so.0 <CDLL 'libOpenGL.so.0', handle 64dbd00 at 0x7f7ad6e18ad0>
+[DEBUG:4186705 ctypesloader:65 2023-05-01 13:43:26,512] Loaded libOpenGL.so => libOpenGL.so.0 <CDLL 'libOpenGL.so.0', handle 64dbd00 at 0x7f7ad5d54150>
+[INFO:4186705 __init__:31 2023-05-01 13:43:26,520] MuJoCo library version is: 2.3.5
+[DEBUG:4186705 base:52 2023-05-01 13:43:29,394] Using render executor class: PassthroughRenderExecutor
+Traceback (most recent call last):
+  File "/home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/runpy.py", line 193, in _run_module_as_main
+    "__main__", mod_spec)
+  File "/home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "/home/sbkim/torchbeast/torchbeast/monobeast.py", line 710, in <module>
+    main(flags)
+  File "/home/sbkim/torchbeast/torchbeast/monobeast.py", line 685, in main
+    test(flags)
+  File "/home/sbkim/torchbeast/torchbeast/monobeast.py", line 544, in test
+    checkpoint = torch.load(checkpointpath, map_location="cpu")
+  File "/home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/site-packages/torch/serialization.py", line 771, in load
+    with _open_file_like(f, 'rb') as opened_file:
+  File "/home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/site-packages/torch/serialization.py", line 270, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+  File "/home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/site-packages/torch/serialization.py", line 251, in __init__
+    super(_open_file, self).__init__(open(name, mode))
+FileNotFoundError: [Errno 2] No such file or directory: '../logs/memory_maze/latest/model.tar'

@@ -1,0 +1,94 @@
+wandb_version: 1
+
+env:
+  desc: null
+  value: memory_maze:MemoryMaze-9x9-ExtraObs-v0
+mode:
+  desc: null
+  value: train
+xpid:
+  desc: null
+  value: null
+disable_checkpoint:
+  desc: null
+  value: false
+savedir:
+  desc: null
+  value: ~/logs/memory_maze
+num_actors:
+  desc: null
+  value: 20
+total_steps:
+  desc: null
+  value: 100000000
+batch_size:
+  desc: null
+  value: 32
+unroll_length:
+  desc: null
+  value: 100
+num_buffers:
+  desc: null
+  value: null
+num_learner_threads:
+  desc: null
+  value: 2
+disable_cuda:
+  desc: null
+  value: false
+gpu_num:
+  desc: null
+  value: '2'
+use_lstm:
+  desc: null
+  value: true
+entropy_cost:
+  desc: null
+  value: 0.001
+baseline_cost:
+  desc: null
+  value: 0.5
+discounting:
+  desc: null
+  value: 0.99
+reward_clipping:
+  desc: null
+  value: abs_one
+learning_rate:
+  desc: null
+  value: 0.0002
+alpha:
+  desc: null
+  value: 0.99
+momentum:
+  desc: null
+  value: 0
+epsilon:
+  desc: null
+  value: 1.0e-07
+grad_norm_clipping:
+  desc: null
+  value: 40.0
+_wandb:
+  desc: null
+  value:
+    python_version: 3.7.16
+    cli_version: 0.15.0
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1682839923.375771
+    t:
+      1:
+      - 1
+      - 55
+      2:
+      - 1
+      - 55
+      3:
+      - 16
+      - 23
+      4: 3.7.16
+      5: 0.15.0
+      8:
+      - 5

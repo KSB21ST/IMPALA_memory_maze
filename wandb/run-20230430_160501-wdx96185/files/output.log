@@ -1,0 +1,49 @@
+[DEBUG:4139808 cmd:982 2023-04-30 16:05:05,835] Popen(['git', 'cat-file', '--batch-check'], cwd=/home/sbkim/torchbeast, universal_newlines=False, shell=None, istream=<valid stream>)
+[DEBUG:4139808 cmd:982 2023-04-30 16:05:05,857] Popen(['git', 'diff', '--cached', '--abbrev=40', '--full-index', '--raw'], cwd=/home/sbkim/torchbeast, universal_newlines=False, shell=None, istream=None)
+[DEBUG:4139808 cmd:982 2023-04-30 16:05:05,878] Popen(['git', 'diff', '--abbrev=40', '--full-index', '--raw'], cwd=/home/sbkim/torchbeast, universal_newlines=False, shell=None, istream=None)
+Creating log directory: /home/sbkim/logs/memory_maze/torchbeast-20230430-160505
+[INFO:4139808 file_writer:104 2023-04-30 16:05:05,898] Creating log directory: /home/sbkim/logs/memory_maze/torchbeast-20230430-160505
+Symlinked log directory: /home/sbkim/logs/memory_maze/latest
+[INFO:4139808 file_writer:117 2023-04-30 16:05:05,900] Symlinked log directory: /home/sbkim/logs/memory_maze/latest
+Saving arguments to /home/sbkim/logs/memory_maze/torchbeast-20230430-160505/meta.json
+[INFO:4139808 file_writer:129 2023-04-30 16:05:05,900] Saving arguments to /home/sbkim/logs/memory_maze/torchbeast-20230430-160505/meta.json
+Saving messages to /home/sbkim/logs/memory_maze/torchbeast-20230430-160505/out.log
+[INFO:4139808 file_writer:137 2023-04-30 16:05:05,902] Saving messages to /home/sbkim/logs/memory_maze/torchbeast-20230430-160505/out.log
+Saving logs data to /home/sbkim/logs/memory_maze/torchbeast-20230430-160505/logs.csv
+[INFO:4139808 file_writer:147 2023-04-30 16:05:05,902] Saving logs data to /home/sbkim/logs/memory_maze/torchbeast-20230430-160505/logs.csv
+Saving logs' fields to /home/sbkim/logs/memory_maze/torchbeast-20230430-160505/fields.csv
+[INFO:4139808 file_writer:148 2023-04-30 16:05:05,903] Saving logs' fields to /home/sbkim/logs/memory_maze/torchbeast-20230430-160505/fields.csv
+[INFO:4139808 monobeast:352 2023-04-30 16:05:05,951] Using CUDA.
+[INFO:4139808 __init__:85 2023-04-30 16:05:05,980] MUJOCO_GL=egl, attempting to import specified OpenGL backend.
+[DEBUG:4139808 ctypesloader:65 2023-04-30 16:05:06,007] Loaded libEGL.so => libEGL.so.1 <CDLL 'libEGL.so.1', handle 5fdaf20 at 0x7ff94087aad0>
+[DEBUG:4139808 ctypesloader:65 2023-04-30 16:05:06,008] Loaded libOpenGL.so => libOpenGL.so.0 <CDLL 'libOpenGL.so.0', handle 5fde180 at 0x7ff94087ad50>
+[INFO:4139808 acceleratesupport:17 2023-04-30 16:05:06,010] No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+[DEBUG:4139808 ctypesloader:65 2023-04-30 16:05:06,026] Loaded libOpenGL.so => libOpenGL.so.0 <CDLL 'libOpenGL.so.0', handle 5fde180 at 0x7ff940744890>
+[DEBUG:4139808 ctypesloader:65 2023-04-30 16:05:06,085] Loaded libOpenGL.so => libOpenGL.so.0 <CDLL 'libOpenGL.so.0', handle 5fde180 at 0x7ff92d6522d0>
+[INFO:4139808 __init__:31 2023-04-30 16:05:06,087] MuJoCo library version is: 2.3.5
+[DEBUG:4139808 base:52 2023-04-30 16:05:07,521] Using render executor class: PassthroughRenderExecutor
+create env
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+(3, 64, 64) 6
+Traceback (most recent call last):
+  File "/home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/runpy.py", line 193, in _run_module_as_main
+    "__main__", mod_spec)
+  File "/home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "/home/sbkim/torchbeast/torchbeast/monobeast.py", line 714, in <module>
+    main(flags)
+  File "/home/sbkim/torchbeast/torchbeast/monobeast.py", line 687, in main
+    train(flags)
+  File "/home/sbkim/torchbeast/torchbeast/monobeast.py", line 399, in train
+    actor.start()
+  File "/home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/multiprocessing/process.py", line 112, in start
+    self._popen = self._Popen(self)
+  File "/home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/multiprocessing/context.py", line 284, in _Popen
+    return Popen(process_obj)
+  File "/home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/multiprocessing/popen_spawn_posix.py", line 32, in __init__
+    super().__init__(process_obj)
+  File "/home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/multiprocessing/popen_fork.py", line 20, in __init__
+    self._launch(process_obj)
+  File "/home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/multiprocessing/popen_spawn_posix.py", line 62, in _launch
+    f.write(fp.getbuffer())
+KeyboardInterrupt

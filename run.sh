@@ -1,0 +1,1 @@
+python -m torchbeast.monobeast --num_actors 30 --use_lstm --discounting 0.99 --entropy_cost 0.001 --batch_size 32 --unroll_length 100 --learning_rate 0.0002 --epsilon 0.0000001 --gpu_num "1, 2, 3"
