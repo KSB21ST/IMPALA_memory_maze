@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 import argparse
 import logging
-import os
+logging.basicConfig(level=logging.INFO)
 import pprint
 import threading
 import time
@@ -46,7 +48,7 @@ from torchbeast.core import environment
 from torchbeast.core import file_writer
 from torchbeast.core import prof
 from torchbeast.core import vtrace
-
+from torchbeast.model import AtariNet
 
 # yapf: disable
 parser = argparse.ArgumentParser(description="PyTorch Scalable Agent")
@@ -57,6 +59,9 @@ parser.add_argument("--env", type=str, default="memory_maze:MemoryMaze-9x9-Extra
                     help="Gym environment.")
 parser.add_argument("--mode", default="train",
                     choices=["train", "test", "test_render"],
+                    help="Training or test mode.")
+parser.add_argument("--wandb_mode", default="disabled",
+                    choices=["online", "offline", "disabled"],
                     help="Training or test mode.")
 parser.add_argument("--xpid", default=None,
                     help="Experiment id (default: None).")
@@ -80,10 +85,12 @@ parser.add_argument("--num_learner_threads", "--num_threads", default=2, type=in
                     metavar="N", help="Number learner threads.")
 parser.add_argument("--disable_cuda", action="store_true",
                     help="Disable CUDA.")
-parser.add_argument("--gpu_num", default="0",
-                    help="Register gpu number.")
+parser.add_argument("--gpu_n", type=int, default=0,
+                    help="GPU #")
 parser.add_argument("--use_lstm", action="store_true",
                     help="Use LSTM in agent model.")
+parser.add_argument("--posemb", default="noemb",
+                    help="type of position embedding: gt, noisygt, noemb")
 
 # Loss settings.
 parser.add_argument("--entropy_cost", default=0.0006,
@@ -224,6 +231,7 @@ def generate_video(image, maze_layout, agent_pos, agent_dir, top_camera):
     video = np.concatenate((top_camera, image), axis=2)
     return video
 
+
 def compute_baseline_loss(advantages):
     return 0.5 * torch.sum(advantages ** 2)
 
@@ -260,7 +268,7 @@ def act(
 
         gym_env = create_env(flags)
         # seed = actor_index ^ int.from_bytes(os.urandom(4), byteorder="little")
-        # gym_env.seed(seed)
+        gym_env.seed(actor_index)
         env = environment.Environment(gym_env)
         env_output = env.initial()
         agent_state = model.initial_state(batch_size=1)
@@ -428,6 +436,10 @@ def create_buffers(flags, obs_shape, num_actions) -> Buffers:
         baseline=dict(size=(T + 1,), dtype=torch.float32),
         last_action=dict(size=(T + 1,), dtype=torch.int64),
         action=dict(size=(T + 1,), dtype=torch.int64),
+        # additional infos
+        agent_pos=dict(size=(T + 1, 2), dtype=torch.float32),
+        agent_dir=dict(size=(T + 1, 2), dtype=torch.float32),
+        target_pos=dict(size=(T + 1, 2), dtype=torch.float32),
     )
     buffers: Buffers = {key: [] for key in specs}
     for _ in range(flags.num_buffers):
@@ -437,13 +449,25 @@ def create_buffers(flags, obs_shape, num_actions) -> Buffers:
 
 
 def train(flags):  # pylint: disable=too-many-branches, too-many-statements
+    
+    assert flags.posemb in ['noemb', 'gt', 'noisygt']
     if flags.xpid is None:
-        flags.xpid = "torchbeast-%s" % time.strftime("%Y%m%d-%H%M%S")
+        flags.xpid = "%s/torchbeast-%s" % (flags.posemb, time.strftime("%Y%m%d-%H%M%S"))
     plogger = file_writer.FileWriter(
         xpid=flags.xpid, xp_args=flags.__dict__, rootdir=flags.savedir
     )
     checkpointpath = os.path.expandvars(
-        os.path.expanduser("%s/%s/%s" % (flags.savedir, flags.xpid, "model.tar"))
+        os.path.expanduser("%s/%s/" % (flags.savedir, flags.xpid))
+    )
+
+    # wandb save
+    wandb.login()
+    wandb.init(
+        project=f"impala_memmaze",
+        entity="junmokane",
+        config=flags,
+        mode=flags.wandb_mode,
+        name=flags.xpid,
     )
 
     if flags.num_buffers is None:  # Set sensible default for num_buffers.
@@ -459,7 +483,9 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
     flags.device = None
     if not flags.disable_cuda and torch.cuda.is_available():
         logging.info("Using CUDA.")
-        flags.device = torch.device("cuda")
+        flags.device = torch.device(f"cuda:{flags.gpu_n}")
+        torch.cuda.set_device(flags.device)
+        # flags.device = torch.device(f"cuda")
     else:
         logging.info("Not using CUDA.")
         flags.device = torch.device("cpu")
@@ -469,7 +495,8 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
     print("$"*100)
     print(env.observation_space.shape, env.action_space.n)
 
-    model = Net(env.observation_space.shape, env.action_space.n, flags.use_lstm)
+    model = Net(env.observation_space.shape, env.action_space.n, flags.posemb, flags.use_lstm)
+    eval_model = Net(env.observation_space.shape, env.action_space.n, flags.posemb, flags.use_lstm)
     buffers = create_buffers(flags, env.observation_space.shape, model.num_actions)
 
     model.share_memory()
@@ -508,16 +535,8 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
         actor_processes.append(actor)
 
     learner_model = Net(
-        env.observation_space.shape, env.action_space.n, flags.use_lstm
+        env.observation_space.shape, env.action_space.n, flags.posemb, flags.use_lstm
     ).to(device=flags.device)
-
-    # optimizer = torch.optim.RMSprop(
-    #     learner_model.parameters(),
-    #     lr=flags.learning_rate,
-    #     momentum=flags.momentum,
-    #     eps=flags.epsilon,
-    #     alpha=flags.alpha,
-    # )
 
     optimizer = torch.optim.Adam(
         learner_model.parameters(),
@@ -556,6 +575,22 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
                 initial_agent_state_buffers,
                 timings,
             )
+
+            '''
+            frame torch.Size([101, 32, 3, 64, 64])
+            reward torch.Size([101, 32])
+            done torch.Size([101, 32])
+            episode_return torch.Size([101, 32])
+            episode_step torch.Size([101, 32])
+            policy_logits torch.Size([101, 32, 6])
+            baseline torch.Size([101, 32])
+            last_action torch.Size([101, 32])
+            action torch.Size([101, 32])
+            agent_pos torch.Size([101, 32, 2])
+            agent_dir torch.Size([101, 32, 2])
+            target_pos torch.Size([101, 32, 2])
+            '''
+
             stats = learn(
                 flags, model, learner_model, batch, agent_state, optimizer, scheduler
             )
@@ -581,10 +616,19 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
         thread.start()
         threads.append(thread)
 
-    def checkpoint():
+    def checkpoint(step):
+
+        import math
+        millnames = ['','K','M','B']
+        def millify(n):
+            n = float(n)
+            millidx = max(0,min(len(millnames)-1, int(math.floor(0 if n == 0 else math.log10(abs(n))/3))))
+            return '{:.0f}{}'.format(n / 10**(3 * millidx), millnames[millidx])
+
+        ckpt_path = f'{checkpointpath}model_{millify(step)}.tar'
         if flags.disable_checkpoint:
             return
-        logging.info("Saving checkpoint to %s", checkpointpath)
+        logging.info("Saving checkpoint to %s", ckpt_path)
         torch.save(
             {
                 "model_state_dict": model.state_dict(),
@@ -592,19 +636,20 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
                 "scheduler_state_dict": scheduler.state_dict(),
                 "flags": vars(flags),
             },
-            checkpointpath,
+            ckpt_path,
         )
 
     timer = timeit.default_timer
     try:
         last_checkpoint_time = timer()
+        counter = -1
         while step < flags.total_steps:
             start_step = step
             start_time = timer()
             time.sleep(5)
 
-            if timer() - last_checkpoint_time > 10 * 60:  # Save every 10 min.
-                checkpoint()
+            if timer() - last_checkpoint_time > 120 * 60:  # Save every 120 min.
+                checkpoint(step)
                 last_checkpoint_time = timer()
 
             sps = (step - start_step) / (timer() - start_time)
@@ -612,6 +657,13 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
                 mean_return = (
                     "Return per episode: %.1f. " % stats["mean_episode_return"]
                 )
+
+                wandb.log({'mean_episode_return_train': stats["mean_episode_return"],
+                           'baseline_loss': stats['baseline_loss'],
+                           'entropy_loss': stats['entropy_loss'],
+                           'pg_loss': stats['pg_loss'],
+                           'total_loss': stats['total_loss']},
+                           step=step)
             else:
                 mean_return = ""
             total_loss = stats.get("total_loss", float("inf"))
@@ -623,6 +675,35 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
                 mean_return,
                 pprint.pformat(stats),
             )
+
+            '''# performance in eval mode'''
+            if (step // 250000) > counter:
+                counter = (step // 250000)
+                num_episodes = 5
+                # load learner_model to eval_model
+                eval_model.load_state_dict(learner_model.state_dict())
+                eval_model.eval()
+                gym_env = create_env(flags)
+                env = environment.Environment(gym_env)
+                observation = env.initial()
+                state = model.initial_state(batch_size=1)
+                returns = [] 
+
+                while len(returns) < num_episodes:
+                    agent_outputs = eval_model(observation, state)
+                    policy_outputs, state = agent_outputs
+                    observation = env.step(policy_outputs["action"])
+                    if observation["done"].item():
+                        returns.append(observation["episode_return"].item())
+                        logging.info(
+                            "Episode ended after %d steps. Return: %.1f",
+                            observation["episode_step"].item(),
+                            observation["episode_return"].item(),
+                        )
+                env.close()
+                wandb.log({'mean_episode_return_eval': sum(returns) / len(returns)}, step=counter*250000)
+                logging.info("Average returns over %i steps: %.1f", num_episodes, sum(returns) / len(returns))
+
     except KeyboardInterrupt:
         return  # Try joining actors then quit.
     else:
@@ -635,7 +716,7 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
         for actor in actor_processes:
             actor.join(timeout=1)
 
-    checkpoint()
+    checkpoint(step)
     plogger.close()
 
 
@@ -646,11 +727,13 @@ def test(flags, num_episodes: int = 100):
         checkpointpath = os.path.expandvars(
             os.path.expanduser("%s/%s/%s" % (flags.savedir, flags.xpid, "model.tar"))
         )
-    flags.device = torch.device("cuda")
+    # flags.device = torch.device(f"cuda:{flags.gpu_n}")
+    # torch.cuda.set_device(flags.device)
+    flags.device = torch.device(f"cuda")
 
     gym_env = create_env(flags)
     env = environment.Environment(gym_env)
-    model = Net((3, 64,64), gym_env.action_space.n, flags.use_lstm)
+    model = Net((3, 64,64), gym_env.action_space.n, flags.posemb, flags.use_lstm)
     # .to(device=flags.device)
     model.eval()
     checkpoint = torch.load(checkpointpath, map_location="cpu")
@@ -662,6 +745,7 @@ def test(flags, num_episodes: int = 100):
 
     # observation = {k: t.to(device=flags.device, non_blocking=True) for k, t in observation.items()}
     returns = []
+    state = model.initial_state(batch_size=1)
     ep = {'image': [], 'agent_pos': [], 'agent_dir': [], 'top_camera': [], 'maze_layout': []}
 
     for k, v in ep.items():
@@ -670,8 +754,8 @@ def test(flags, num_episodes: int = 100):
     while len(returns) < num_episodes:
         if flags.mode == "test_render":
             env.gym_env.render()
-        agent_outputs = model(observation)
-        policy_outputs, _ = agent_outputs
+        agent_outputs = model(observation, state)
+        policy_outputs, state = agent_outputs
         observation = env.step(policy_outputs["action"])
         observation['frame'] = rearrange(resize(observation['frame'][0, 0]), 'c h w -> 1 1 c h w')
         # observation['frame'] = resize(observation['frame'])
@@ -701,133 +785,18 @@ def test(flags, num_episodes: int = 100):
             "Average returns over %i steps: %.1f", num_episodes, sum(returns) / len(returns)
         )
 
-    
-
-    
-
-
-
-class AtariNet(nn.Module):
-    def __init__(self, observation_shape, num_actions, use_lstm=True):
-        super(AtariNet, self).__init__()
-        self.observation_shape = observation_shape
-        self.num_actions = num_actions
-
-        # Feature extraction.
-        self.conv1 = nn.Conv2d(
-            in_channels=self.observation_shape[0],
-            out_channels=32,
-            kernel_size=8,
-            stride=4,
-        )
-        self.conv2 = nn.Conv2d(32, 64, kernel_size=4, stride=2)
-        self.conv3 = nn.Conv2d(64, 64, kernel_size=3, stride=1)
-
-        # Fully connected layer.
-        # self.fc = nn.Linear(3136, 512)
-        self.fc = nn.Linear(1024, 512)
-
-        # FC output size + one-hot of last action + last reward.
-        core_output_size = self.fc.out_features + num_actions + 1
-
-        self.use_lstm = use_lstm
-        if use_lstm:
-            self.core = nn.LSTM(core_output_size, core_output_size, 2)
-
-        self.policy = nn.Linear(core_output_size, self.num_actions)
-        self.baseline = nn.Linear(core_output_size, 1)
-
-    def initial_state(self, batch_size):
-        if not self.use_lstm:
-            return tuple()
-        return tuple(
-            torch.zeros(self.core.num_layers, batch_size, self.core.hidden_size)
-            for _ in range(2)
-        )
-
-    def forward(self, inputs, core_state=()):
-        x = inputs["frame"]  # [T, B, C, H, W].
-        T, B, *_ = x.shape
-        x = torch.flatten(x, 0, 1)  # Merge time and batch.
-        x = x.float() / 255.0
-        x = F.relu(self.conv1(x))
-        x = F.relu(self.conv2(x))
-        x = F.relu(self.conv3(x))
-        x = x.view(T * B, -1)
-        x = F.relu(self.fc(x))
-
-        one_hot_last_action = F.one_hot(
-            inputs["last_action"].view(T * B), self.num_actions
-        ).float()
-        clipped_reward = torch.clamp(inputs["reward"], -1, 1).view(T * B, 1)
-        core_input = torch.cat([x, clipped_reward, one_hot_last_action], dim=-1)
-
-        if self.use_lstm:
-            core_input = core_input.view(T, B, -1)
-            core_output_list = []
-            notdone = (~inputs["done"]).float()
-            for input, nd in zip(core_input.unbind(), notdone.unbind()):
-                # Reset core state to zero whenever an episode ended.
-                # Make `done` broadcastable with (num_layers, B, hidden_size)
-                # states:
-                nd = nd.view(1, -1, 1)
-                core_state = tuple(nd * s for s in core_state)
-                output, core_state = self.core(input.unsqueeze(0), core_state)
-                core_output_list.append(output)
-            core_output = torch.flatten(torch.cat(core_output_list), 0, 1)
-        else:
-            core_output = core_input
-            core_state = tuple()
-
-        policy_logits = self.policy(core_output)
-        baseline = self.baseline(core_output)
-
-        if self.training:
-            action = torch.multinomial(F.softmax(policy_logits, dim=1), num_samples=1)
-        else:
-            # Don't sample when testing.
-            action = torch.argmax(policy_logits, dim=1)
-
-        policy_logits = policy_logits.view(T, B, self.num_actions)
-        baseline = baseline.view(T, B)
-        action = action.view(T, B)
-
-        return (
-            dict(policy_logits=policy_logits, baseline=baseline, action=action),
-            core_state,
-        )
-
 
 Net = AtariNet
 
-
-# def create_env(flags):
-#     return atari_wrappers.wrap_pytorch(
-#         atari_wrappers.wrap_deepmind(
-#             atari_wrappers.make_atari(flags.env),
-#             clip_rewards=False,
-#             frame_stack=True,
-#             scale=False,
-#         )
-#     )
-
 def create_env(flags):
-    env = gym.make('MemoryMaze-Custom-v0')
-    # env = SaveNpzWrapper(
-    #         env,
-    #         "../logs/memory_maze/video_output",
-    #         video_format='mp4',
-    #         video_fps=10 * 2)
     if flags.mode == "train":
+        env = gym.make(flags.env)
         return atari_wrappers.wrap_pytorch(env)
     else:
+        # env = gym.make('MemoryMaze-Custom-v0')
+        env = gym.make(flags.env)
         return atari_wrappers.wrap_pytorch_test(env)
     
-
-# def create_env(flags):
-#     env = gym.make(flags.env)
-#     return env
-
 
 def main(flags):
     if flags.mode == "train":
@@ -838,28 +807,4 @@ def main(flags):
 
 if __name__ == "__main__":
     flags = parser.parse_args()
-
-    # wandb_mode = "online"
-
-    # wandb_api_key = "a739164ae7f378b332af7275da8f824e1374258f"
-
-    # os.environ["WANDB_MODE"] = wandb_mode
-    # os.environ["WANDB_API_KEY"] = wandb_api_key
-
-    # os.environ["CUDA_VISIBLE_DEVICES"]= flags.gpu_num
-
-    # wandb.login()
-
-    # wandb.init(
-    #     project="IMPALA_memory_maze",
-    #     entity="agentlab",
-    #     config=flags,
-    #     save_code=True,
-    #     allow_val_change=True,
-    # )
-
     main(flags)
-
-    # wandb.finish()
-
-

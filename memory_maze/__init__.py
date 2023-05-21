@@ -53,7 +53,7 @@ try:
         register(id=f'MemoryMaze-{key}-HiFreq-HD-v0', entry_point=f(_make_gym_env, dm_task, image_only_obs=True, control_freq=40, camera_resolution=256))
 
     # customized memory maze - basically gives information as much as possible
-    register(id=f'MemoryMaze-Custom-v0', entry_point=f(_make_gym_env, tasks.memory_maze_custom, global_observables=True, top_camera=False, give_top_camera=True, camera_resolution=256))
+    register(id=f'MemoryMaze-Custom-v0', entry_point=f(_make_gym_env, tasks.memory_maze_custom, global_observables=True, top_camera=False, give_top_camera=True, camera_resolution=64))
 
 except ImportError:
     print('memory_maze: gym environments not registered.')

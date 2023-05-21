@@ -37,6 +37,14 @@ class Environment:
         
         reset_val = self.gym_env.reset()
         initial_frame = _format_frame(reset_val['image'])
+        ''' # additional infos
+        image, target_color, agent_pos, agent_dir, targets_vec,
+        targets_pos, target_pos, maze_layout
+        '''
+        maze_len = len(reset_val['maze_layout'])
+        agent_pos = torch.tensor(reset_val['agent_pos']).float().view(1, 1, 2) / maze_len
+        agent_dir = torch.tensor(reset_val['agent_dir']).float().view(1, 1, 2)
+        target_pos = torch.tensor(reset_val['target_pos']).float().view(1, 1, 2) / maze_len
 
         return dict(
             frame=initial_frame,
@@ -45,11 +53,9 @@ class Environment:
             episode_return=self.episode_return,
             episode_step=self.episode_step,
             last_action=initial_last_action,
-            image=reset_val['image'],
-            agent_pos=reset_val['agent_pos'],
-            agent_dir=reset_val['agent_dir'],
-            top_camera=reset_val['top_camera'],
-            maze_layout=reset_val['maze_layout'],
+            agent_pos=agent_pos,
+            agent_dir=agent_dir,
+            target_pos=target_pos
         )
 
     def step(self, action):
@@ -66,6 +72,10 @@ class Environment:
         frame = _format_frame(reset_val['image'])
         reward = torch.tensor(reward).view(1, 1)
         done = torch.tensor(done).view(1, 1)
+        maze_len = len(reset_val['maze_layout'])
+        agent_pos = torch.tensor(reset_val['agent_pos']).float().view(1, 1, 2) / maze_len
+        agent_dir = torch.tensor(reset_val['agent_dir']).float().view(1, 1, 2)
+        target_pos = torch.tensor(reset_val['target_pos']).float().view(1, 1, 2) / maze_len
 
         return dict(
             frame=frame,
@@ -74,11 +84,9 @@ class Environment:
             episode_return=episode_return,
             episode_step=episode_step,
             last_action=action,
-            image=reset_val['image'],
-            agent_pos=reset_val['agent_pos'],
-            agent_dir=reset_val['agent_dir'],
-            top_camera=reset_val['top_camera'],
-            maze_layout=reset_val['maze_layout'],
+            agent_pos=agent_pos,
+            agent_dir=agent_dir,
+            target_pos=target_pos
         )
 
     def close(self):

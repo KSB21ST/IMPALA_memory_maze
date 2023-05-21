@@ -361,7 +361,7 @@ class ImageToPyTorchTest(gym.ObservationWrapper):
         return observation
 
 def wrap_pytorch(env):
-    return ImageToPyTorch(env)
+    return ImageToPyTorchTest(env)
 
 def wrap_pytorch_test(env):
     return ImageToPyTorchTest(env)
