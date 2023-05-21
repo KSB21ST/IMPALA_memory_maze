@@ -45,6 +45,7 @@ class Environment:
         agent_pos = torch.tensor(reset_val['agent_pos']).float().view(1, 1, 2) / maze_len
         agent_dir = torch.tensor(reset_val['agent_dir']).float().view(1, 1, 2)
         target_pos = torch.tensor(reset_val['target_pos']).float().view(1, 1, 2) / maze_len
+        targets_pos = torch.tensor(reset_val['targets_pos']).float().view(1, 1, 6) / maze_len
 
         return dict(
             frame=initial_frame,
@@ -55,7 +56,8 @@ class Environment:
             last_action=initial_last_action,
             agent_pos=agent_pos,
             agent_dir=agent_dir,
-            target_pos=target_pos
+            target_pos=target_pos,
+            targets_pos=targets_pos,
         )
 
     def step(self, action):
@@ -76,6 +78,7 @@ class Environment:
         agent_pos = torch.tensor(reset_val['agent_pos']).float().view(1, 1, 2) / maze_len
         agent_dir = torch.tensor(reset_val['agent_dir']).float().view(1, 1, 2)
         target_pos = torch.tensor(reset_val['target_pos']).float().view(1, 1, 2) / maze_len
+        targets_pos = torch.tensor(reset_val['targets_pos']).float().view(1, 1, 6) / maze_len
 
         return dict(
             frame=frame,
@@ -86,7 +89,8 @@ class Environment:
             last_action=action,
             agent_pos=agent_pos,
             agent_dir=agent_dir,
-            target_pos=target_pos
+            target_pos=target_pos,
+            targets_pos=targets_pos,
         )
 
     def close(self):

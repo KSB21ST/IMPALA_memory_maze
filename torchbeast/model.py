@@ -1,6 +1,45 @@
 import torch
 from torch import nn
 from torch.nn import functional as F
+from einops import rearrange, repeat
+
+
+def compute_noisy_agent_pos(targets_pos, agent_pos, eps=0.1):
+    
+    dim_ = agent_pos.dim()
+    if dim_ == 3:
+        t = targets_pos.size(0)
+        targets_pos= rearrange(targets_pos, 't b c -> (t b) c')
+        agent_pos = repeat(agent_pos, 't b c -> (t b) c')    
+
+    targets_pos= rearrange(targets_pos, 'tb (n c) -> tb n c', n=3)
+    agent_pos_rep = repeat(agent_pos, 'tb c -> tb n c', n=3)
+    rs = ((targets_pos - agent_pos_rep) ** 2).sum(-1).sqrt() 
+
+    tb = rs.size(0)
+    r1 = rs[:, 0] + torch.randn(tb).to(rs.device) * eps    # tb
+    r2 = rs[:, 1] + torch.randn(tb).to(rs.device) * eps
+    r3 = rs[:, 2] + torch.randn(tb).to(rs.device) * eps
+    x1 = targets_pos[:, 0, 0]
+    y1 = targets_pos[:, 0, 1]
+    x2 = targets_pos[:, 1, 0]
+    y2 = targets_pos[:, 1, 1]
+    x3 = targets_pos[:, 2, 0]
+    y3 = targets_pos[:, 2, 1]
+    a = -2*x1 + 2*x2
+    b = -2*y1 + 2*y2
+    c = r1**2 - r2**2 - x1**2 + x2**2 - y1**2 + y2**2
+    d = -2*x2 + 2*x3
+    e = -2*y2 + 2*y3
+    f = r2**2 - r3**2 - x2**2 + x3**2 - y2**2 + y3**2
+    agent_pos_compute = torch.zeros_like(agent_pos).float()
+    agent_pos_compute[:, 0] = (c*e-f*b) / (e*a-b*d)
+    agent_pos_compute[:, 1] = (c*d-a*f) / (b*d-a*e)
+
+    if dim_ == 3:
+        agent_pos_compute = rearrange(agent_pos_compute, '(t b) c -> t b c', t=t)
+
+    return agent_pos_compute
 
 
 class resnet(nn.Module):
@@ -43,21 +82,12 @@ class resnet(nn.Module):
 
 
 class AtariNet(nn.Module):
-    def __init__(self, observation_shape, num_actions, posemb, use_lstm=True):
+    def __init__(self, observation_shape, num_actions, flags):
         super(AtariNet, self).__init__()
         self.observation_shape = observation_shape
         self.num_actions = num_actions
-        self.posemb = posemb
-
-        # # Feature extraction.
-        # self.conv1 = nn.Conv2d(
-        #     in_channels=self.observation_shape[0],
-        #     out_channels=32,
-        #     kernel_size=8,
-        #     stride=4,
-        # )
-        # self.conv2 = nn.Conv2d(32, 64, kernel_size=4, stride=2)
-        # self.conv3 = nn.Conv2d(64, 64, kernel_size=3, stride=1)
+        self.posemb = flags.posemb
+        self.pos_noise = flags.pos_noise
 
         # Feature extraction.
         enc_modules = nn.ModuleList([resnet(in_ch, num_ch, num_blocks) 
@@ -76,8 +106,8 @@ class AtariNet(nn.Module):
         elif self.posemb == 'noisygt':
             core_output_size = self.fc.out_features + num_actions + 1 + 6
 
-        self.use_lstm = use_lstm
-        if use_lstm:
+        self.use_lstm = flags.use_lstm
+        if self.use_lstm:
             self.core = nn.LSTM(core_output_size, core_output_size, 2)
 
         self.policy = nn.Linear(core_output_size, self.num_actions)
@@ -111,6 +141,7 @@ class AtariNet(nn.Module):
         agent_pos = inputs['agent_pos'].view(T * B, 2)
         agent_dir = inputs['agent_dir'].view(T * B, 2)
         target_pos = inputs['target_pos'].view(T * B, 2)
+        targets_pos = inputs['targets_pos'].view(T * B, 6)
         
         # concat pos info depending on posemb option
         if self.posemb == 'noemb':
@@ -119,8 +150,11 @@ class AtariNet(nn.Module):
             core_input = torch.cat([x, clipped_reward, one_hot_last_action,
                                      agent_pos, agent_dir, target_pos], dim=-1)
         elif self.posemb == 'noisygt':
+            # calculate noisy agent_pos
+            noisy_agent_pos = compute_noisy_agent_pos(targets_pos, agent_pos, self.pos_noise)
             core_input = torch.cat([x, clipped_reward, one_hot_last_action,
-                                     agent_pos, agent_dir, target_pos], dim=-1)
+                                     noisy_agent_pos, agent_dir, target_pos], dim=-1)
+                
 
         if self.use_lstm:
             core_input = core_input.view(T, B, -1)

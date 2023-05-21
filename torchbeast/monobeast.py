@@ -48,7 +48,7 @@ from torchbeast.core import environment
 from torchbeast.core import file_writer
 from torchbeast.core import prof
 from torchbeast.core import vtrace
-from torchbeast.model import AtariNet
+from torchbeast.model import AtariNet, compute_noisy_agent_pos
 
 # yapf: disable
 parser = argparse.ArgumentParser(description="PyTorch Scalable Agent")
@@ -91,6 +91,10 @@ parser.add_argument("--use_lstm", action="store_true",
                     help="Use LSTM in agent model.")
 parser.add_argument("--posemb", default="noemb",
                     help="type of position embedding: gt, noisygt, noemb")
+parser.add_argument("--use_int_rew", action="store_true",
+                    help="Use intrinsic reward for better learning.")
+parser.add_argument("--pos_noise", default=0.01,
+                    type=float, help="noise for agent_pos")
 
 # Loss settings.
 parser.add_argument("--entropy_cost", default=0.0006,
@@ -372,7 +376,28 @@ def learn(
         batch = {key: tensor[1:] for key, tensor in batch.items()}
         learner_outputs = {key: tensor[:-1] for key, tensor in learner_outputs.items()}
 
-        rewards = batch["reward"]
+        if not flags.posemb == 'noemb' and flags.use_int_rew:
+            target_pos = batch['target_pos']  # t,b,2
+            targets_pos = batch['targets_pos']  # t,b,6
+            agent_pos =  batch['agent_pos']  # t,b,2
+
+            if flags.posemb == 'gt':
+                dist = ((target_pos - agent_pos) ** 2).sum(-1)
+            elif flags.posemb == 'noisygt':
+                noisy_agent_pos = compute_noisy_agent_pos(targets_pos, agent_pos, flags.pos_noise)
+                dist = ((target_pos - noisy_agent_pos) ** 2).sum(-1)
+                
+            dist_diff = dist[:-1] - dist[1:]
+            int_rew = torch.where(dist_diff > 0, dist_diff, 0.) * 0.2
+            rewards = batch["reward"]  
+            rewards[1:] = rewards[1:] + int_rew
+
+            # print(agent_pos[:5, 0])
+            # print(noisy_agent_pos[:5, 0])
+            # print(int_rew.max(), int_rew.min())
+        else:
+            rewards = batch["reward"]
+
         if flags.reward_clipping == "abs_one":
             clipped_rewards = torch.clamp(rewards, -1, 1)
         elif flags.reward_clipping == "none":
@@ -440,6 +465,7 @@ def create_buffers(flags, obs_shape, num_actions) -> Buffers:
         agent_pos=dict(size=(T + 1, 2), dtype=torch.float32),
         agent_dir=dict(size=(T + 1, 2), dtype=torch.float32),
         target_pos=dict(size=(T + 1, 2), dtype=torch.float32),
+        targets_pos=dict(size=(T + 1, 6), dtype=torch.float32),
     )
     buffers: Buffers = {key: [] for key in specs}
     for _ in range(flags.num_buffers):
@@ -495,8 +521,8 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
     print("$"*100)
     print(env.observation_space.shape, env.action_space.n)
 
-    model = Net(env.observation_space.shape, env.action_space.n, flags.posemb, flags.use_lstm)
-    eval_model = Net(env.observation_space.shape, env.action_space.n, flags.posemb, flags.use_lstm)
+    model = Net(env.observation_space.shape, env.action_space.n, flags)
+    eval_model = Net(env.observation_space.shape, env.action_space.n, flags)
     buffers = create_buffers(flags, env.observation_space.shape, model.num_actions)
 
     model.share_memory()
@@ -535,7 +561,7 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
         actor_processes.append(actor)
 
     learner_model = Net(
-        env.observation_space.shape, env.action_space.n, flags.posemb, flags.use_lstm
+        env.observation_space.shape, env.action_space.n, flags
     ).to(device=flags.device)
 
     optimizer = torch.optim.Adam(
@@ -733,7 +759,7 @@ def test(flags, num_episodes: int = 100):
 
     gym_env = create_env(flags)
     env = environment.Environment(gym_env)
-    model = Net((3, 64,64), gym_env.action_space.n, flags.posemb, flags.use_lstm)
+    model = Net((3, 64,64), gym_env.action_space.n, flags)
     # .to(device=flags.device)
     model.eval()
     checkpoint = torch.load(checkpointpath, map_location="cpu")
