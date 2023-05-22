@@ -9,10 +9,19 @@ def compute_noisy_agent_pos(targets_pos, agent_pos, eps=0.1):
     dim_ = agent_pos.dim()
     if dim_ == 3:
         t = targets_pos.size(0)
-        targets_pos= rearrange(targets_pos, 't b c -> (t b) c')
+        targets_pos= rearrange(targets_pos, 't b n c -> (t b) n c')
         agent_pos = repeat(agent_pos, 't b c -> (t b) c')    
 
-    targets_pos= rearrange(targets_pos, 'tb (n c) -> tb n c', n=3)
+    # take targets_pos that are closest to the current agent_pos
+    num_tars = targets_pos.size(1)
+    assert num_tars >= 3
+    if num_tars > 3:
+        # agent_pos tb,2
+        # targets_pos tb,n,2
+        dist = torch.cdist(targets_pos, agent_pos)[..., 0]  # tb,n
+        sort_idx = torch.argsort(dist, dim=1)  # tb,n
+        targets_pos = targets_pos[torch.arange(targets_pos.size(0)).view(-1, 1), sort_idx][:, :3]  # tb,3,2
+        
     agent_pos_rep = repeat(agent_pos, 'tb c -> tb n c', n=3)
     rs = ((targets_pos - agent_pos_rep) ** 2).sum(-1).sqrt() 
 
@@ -141,7 +150,7 @@ class AtariNet(nn.Module):
         agent_pos = inputs['agent_pos'].view(T * B, 2)
         agent_dir = inputs['agent_dir'].view(T * B, 2)
         target_pos = inputs['target_pos'].view(T * B, 2)
-        targets_pos = inputs['targets_pos'].view(T * B, 6)
+        targets_pos = inputs['targets_pos'].view(T * B, -1, 2)
         
         # concat pos info depending on posemb option
         if self.posemb == 'noemb':

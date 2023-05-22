@@ -41,11 +41,12 @@ class Environment:
         image, target_color, agent_pos, agent_dir, targets_vec,
         targets_pos, target_pos, maze_layout
         '''
+        num_tars = reset_val['targets_pos'].shape[0]
         maze_len = len(reset_val['maze_layout'])
         agent_pos = torch.tensor(reset_val['agent_pos']).float().view(1, 1, 2) / maze_len
         agent_dir = torch.tensor(reset_val['agent_dir']).float().view(1, 1, 2)
         target_pos = torch.tensor(reset_val['target_pos']).float().view(1, 1, 2) / maze_len
-        targets_pos = torch.tensor(reset_val['targets_pos']).float().view(1, 1, 6) / maze_len
+        targets_pos = torch.tensor(reset_val['targets_pos']).float().view(1, 1, num_tars, 2) / maze_len
 
         return dict(
             frame=initial_frame,
@@ -75,10 +76,12 @@ class Environment:
         reward = torch.tensor(reward).view(1, 1)
         done = torch.tensor(done).view(1, 1)
         maze_len = len(reset_val['maze_layout'])
+        
+        num_tars = reset_val['targets_pos'].shape[0]
         agent_pos = torch.tensor(reset_val['agent_pos']).float().view(1, 1, 2) / maze_len
         agent_dir = torch.tensor(reset_val['agent_dir']).float().view(1, 1, 2)
         target_pos = torch.tensor(reset_val['target_pos']).float().view(1, 1, 2) / maze_len
-        targets_pos = torch.tensor(reset_val['targets_pos']).float().view(1, 1, 6) / maze_len
+        targets_pos = torch.tensor(reset_val['targets_pos']).float().view(1, 1, num_tars, 2) / maze_len
 
         return dict(
             frame=frame,

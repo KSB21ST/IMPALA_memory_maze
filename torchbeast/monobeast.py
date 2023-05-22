@@ -378,7 +378,7 @@ def learn(
 
         if not flags.posemb == 'noemb' and flags.use_int_rew:
             target_pos = batch['target_pos']  # t,b,2
-            targets_pos = batch['targets_pos']  # t,b,6
+            targets_pos = batch['targets_pos']  # t,b,n,2
             agent_pos =  batch['agent_pos']  # t,b,2
 
             if flags.posemb == 'gt':
@@ -388,9 +388,9 @@ def learn(
                 dist = ((target_pos - noisy_agent_pos) ** 2).sum(-1)
                 
             dist_diff = dist[:-1] - dist[1:]
-            int_rew = torch.where(dist_diff > 0, dist_diff, 0.) * 0.2
+            int_rew = torch.where(dist_diff > 0.0, 0.001, 0.)
             rewards = batch["reward"]  
-            rewards[1:] = rewards[1:] + int_rew
+            rewards[1:] = rewards[1:] # + int_rew
 
             # print(agent_pos[:5, 0])
             # print(noisy_agent_pos[:5, 0])
@@ -449,7 +449,7 @@ def learn(
         return stats
 
 
-def create_buffers(flags, obs_shape, num_actions) -> Buffers:
+def create_buffers(flags, obs_shape, num_actions, num_tars) -> Buffers:
     T = flags.unroll_length
     specs = dict(
         frame=dict(size=(T + 1, *obs_shape), dtype=torch.uint8),
@@ -465,7 +465,7 @@ def create_buffers(flags, obs_shape, num_actions) -> Buffers:
         agent_pos=dict(size=(T + 1, 2), dtype=torch.float32),
         agent_dir=dict(size=(T + 1, 2), dtype=torch.float32),
         target_pos=dict(size=(T + 1, 2), dtype=torch.float32),
-        targets_pos=dict(size=(T + 1, 6), dtype=torch.float32),
+        targets_pos=dict(size=(T + 1, num_tars, 2), dtype=torch.float32),
     )
     buffers: Buffers = {key: [] for key in specs}
     for _ in range(flags.num_buffers):
@@ -517,13 +517,18 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
         flags.device = torch.device("cpu")
 
     env = create_env(flags)
-
+    env = environment.Environment(env)
+    env_output = env.initial()
+    num_tars = env_output['targets_pos'].shape[-2]
+    env.close()
+    env = create_env(flags)
+    
     print("$"*100)
     print(env.observation_space.shape, env.action_space.n)
 
     model = Net(env.observation_space.shape, env.action_space.n, flags)
     eval_model = Net(env.observation_space.shape, env.action_space.n, flags)
-    buffers = create_buffers(flags, env.observation_space.shape, model.num_actions)
+    buffers = create_buffers(flags, env.observation_space.shape, model.num_actions, num_tars)
 
     model.share_memory()
 
@@ -672,7 +677,7 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
         while step < flags.total_steps:
             start_step = step
             start_time = timer()
-            time.sleep(5)
+            time.sleep(30)
 
             if timer() - last_checkpoint_time > 120 * 60:  # Save every 120 min.
                 checkpoint(step)
@@ -684,7 +689,7 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
                     "Return per episode: %.1f. " % stats["mean_episode_return"]
                 )
 
-                wandb.log({'mean_episode_return_train': stats["mean_episode_return"],
+                wandb.log({'mean_episode_return': stats["mean_episode_return"],
                            'baseline_loss': stats['baseline_loss'],
                            'entropy_loss': stats['entropy_loss'],
                            'pg_loss': stats['pg_loss'],
@@ -703,32 +708,32 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
             )
 
             '''# performance in eval mode'''
-            if (step // 250000) > counter:
-                counter = (step // 250000)
-                num_episodes = 5
-                # load learner_model to eval_model
-                eval_model.load_state_dict(learner_model.state_dict())
-                eval_model.eval()
-                gym_env = create_env(flags)
-                env = environment.Environment(gym_env)
-                observation = env.initial()
-                state = model.initial_state(batch_size=1)
-                returns = [] 
+            # if (step // 250000) > counter:
+            #     counter = (step // 250000)
+            #     num_episodes = 5
+            #     # load learner_model to eval_model
+            #     eval_model.load_state_dict(learner_model.state_dict())
+            #     eval_model.eval()
+            #     gym_env = create_env(flags)
+            #     env = environment.Environment(gym_env)
+            #     observation = env.initial()
+            #     state = model.initial_state(batch_size=1)
+            #     returns = [] 
 
-                while len(returns) < num_episodes:
-                    agent_outputs = eval_model(observation, state)
-                    policy_outputs, state = agent_outputs
-                    observation = env.step(policy_outputs["action"])
-                    if observation["done"].item():
-                        returns.append(observation["episode_return"].item())
-                        logging.info(
-                            "Episode ended after %d steps. Return: %.1f",
-                            observation["episode_step"].item(),
-                            observation["episode_return"].item(),
-                        )
-                env.close()
-                wandb.log({'mean_episode_return_eval': sum(returns) / len(returns)}, step=counter*250000)
-                logging.info("Average returns over %i steps: %.1f", num_episodes, sum(returns) / len(returns))
+            #     while len(returns) < num_episodes:
+            #         agent_outputs = eval_model(observation, state)
+            #         policy_outputs, state = agent_outputs
+            #         observation = env.step(policy_outputs["action"])
+            #         if observation["done"].item():
+            #             returns.append(observation["episode_return"].item())
+            #             logging.info(
+            #                 "Episode ended after %d steps. Return: %.1f",
+            #                 observation["episode_step"].item(),
+            #                 observation["episode_return"].item(),
+            #             )
+            #     env.close()
+            #     wandb.log({'mean_episode_return_eval': sum(returns) / len(returns)}, step=counter*250000)
+            #     logging.info("Average returns over %i steps: %.1f", num_episodes, sum(returns) / len(returns))
 
     except KeyboardInterrupt:
         return  # Try joining actors then quit.
@@ -833,4 +838,5 @@ def main(flags):
 
 if __name__ == "__main__":
     flags = parser.parse_args()
+    print(flags)
     main(flags)
