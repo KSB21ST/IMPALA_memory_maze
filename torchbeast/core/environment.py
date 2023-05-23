@@ -14,6 +14,7 @@
 """The environment class for MonoBeast."""
 
 import torch
+from einops import rearrange, repeat
 
 
 def _format_frame(frame):
@@ -21,11 +22,59 @@ def _format_frame(frame):
     return frame.view((1, 1) + frame.shape)  # (...) -> (T,B,...).
 
 
+def compute_noisy_agent_pos(targets_pos, agent_pos, eps=0.1):
+    
+    dim_ = agent_pos.dim()
+    if dim_ == 3:
+        t = targets_pos.size(0)
+        targets_pos= rearrange(targets_pos, 't b n c -> (t b) n c')
+        agent_pos = repeat(agent_pos, 't b c -> (t b) c')    
+
+    # take targets_pos that are closest to the current agent_pos
+    num_tars = targets_pos.size(1)
+    assert num_tars >= 3
+    if num_tars > 3:
+        # agent_pos tb,2
+        # targets_pos tb,n,2
+        dist = torch.cdist(targets_pos, agent_pos)[..., 0]  # tb,n
+        sort_idx = torch.argsort(dist, dim=1)  # tb,n
+        targets_pos = targets_pos[torch.arange(targets_pos.size(0)).view(-1, 1), sort_idx][:, :3]  # tb,3,2
+        
+    agent_pos_rep = repeat(agent_pos, 'tb c -> tb n c', n=3)
+    rs = ((targets_pos - agent_pos_rep) ** 2).sum(-1).sqrt() 
+
+    tb = rs.size(0)
+    r1 = rs[:, 0] + torch.randn(tb).to(rs.device) * eps    # tb
+    r2 = rs[:, 1] + torch.randn(tb).to(rs.device) * eps
+    r3 = rs[:, 2] + torch.randn(tb).to(rs.device) * eps
+    x1 = targets_pos[:, 0, 0]
+    y1 = targets_pos[:, 0, 1]
+    x2 = targets_pos[:, 1, 0]
+    y2 = targets_pos[:, 1, 1]
+    x3 = targets_pos[:, 2, 0]
+    y3 = targets_pos[:, 2, 1]
+    a = -2*x1 + 2*x2
+    b = -2*y1 + 2*y2
+    c = r1**2 - r2**2 - x1**2 + x2**2 - y1**2 + y2**2
+    d = -2*x2 + 2*x3
+    e = -2*y2 + 2*y3
+    f = r2**2 - r3**2 - x2**2 + x3**2 - y2**2 + y3**2
+    agent_pos_compute = torch.zeros_like(agent_pos).float()
+    agent_pos_compute[:, 0] = (c*e-f*b) / (e*a-b*d)
+    agent_pos_compute[:, 1] = (c*d-a*f) / (b*d-a*e)
+
+    if dim_ == 3:
+        agent_pos_compute = rearrange(agent_pos_compute, '(t b) c -> t b c', t=t)
+
+    return agent_pos_compute
+
+
 class Environment:
-    def __init__(self, gym_env):
+    def __init__(self, gym_env, flags):
         self.gym_env = gym_env
         self.episode_return = None
         self.episode_step = None
+        self.flags = flags
 
     def initial(self):
         initial_reward = torch.zeros(1, 1)
@@ -41,12 +90,27 @@ class Environment:
         image, target_color, agent_pos, agent_dir, targets_vec,
         targets_pos, target_pos, maze_layout
         '''
+        self.res = 15
         num_tars = reset_val['targets_pos'].shape[0]
         maze_len = len(reset_val['maze_layout'])
-        agent_pos = torch.tensor(reset_val['agent_pos']).float().view(1, 1, 2) / maze_len
+        agent_pos = torch.tensor(reset_val['agent_pos']).float().view(1, 1, 2) 
+        agent_ori_pos = agent_pos.clone()
         agent_dir = torch.tensor(reset_val['agent_dir']).float().view(1, 1, 2)
-        target_pos = torch.tensor(reset_val['target_pos']).float().view(1, 1, 2) / maze_len
-        targets_pos = torch.tensor(reset_val['targets_pos']).float().view(1, 1, num_tars, 2) / maze_len
+        target_pos = torch.tensor(reset_val['target_pos']).float().view(1, 1, 2) 
+        targets_pos = torch.tensor(reset_val['targets_pos']).float().view(1, 1, num_tars, 2)
+        if self.flags.posemb == 'noisygt':
+            agent_pos = compute_noisy_agent_pos(targets_pos, agent_pos, self.flags.pos_noise)        
+        
+        # this makes for single grid (1x1) in NxM maze, resolution is 15
+        agent_ori_pos = ((agent_ori_pos / maze_len) * (self.res * maze_len)).long().float() / (self.res * maze_len)
+        agent_pos = ((agent_pos / maze_len) * (self.res * maze_len)).long().float() / (self.res * maze_len)
+        target_pos = ((target_pos / maze_len) * (self.res * maze_len)).long().float() / (self.res * maze_len)
+        targets_pos = ((targets_pos / maze_len) * (self.res * maze_len)).long().float() / (self.res * maze_len)
+
+        print(agent_pos)
+        print(agent_ori_pos)
+        print(target_pos)
+        print(targets_pos)
 
         return dict(
             frame=initial_frame,

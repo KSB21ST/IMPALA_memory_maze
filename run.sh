@@ -20,7 +20,6 @@ python -m torchbeast.monobeast \
     --posemb "noisygt" \
     --pos_noise 0.0 \
     --num_actors 16 \
-    --use_int_rew \
     --discounting 0.99 \
     --entropy_cost 0.001 \
     --batch_size 32 \

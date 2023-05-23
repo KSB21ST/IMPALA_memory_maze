@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+os.environ["CUDA_VISIBLE_DEVICES"] = "7"
 import argparse
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -48,7 +48,8 @@ from torchbeast.core import environment
 from torchbeast.core import file_writer
 from torchbeast.core import prof
 from torchbeast.core import vtrace
-from torchbeast.model import AtariNet, compute_noisy_agent_pos
+from torchbeast.model import AtariNet
+from torchbeast.core.environment import compute_noisy_agent_pos
 
 # yapf: disable
 parser = argparse.ArgumentParser(description="PyTorch Scalable Agent")
@@ -273,7 +274,7 @@ def act(
         gym_env = create_env(flags)
         # seed = actor_index ^ int.from_bytes(os.urandom(4), byteorder="little")
         gym_env.seed(actor_index)
-        env = environment.Environment(gym_env)
+        env = environment.Environment(gym_env, flags)
         env_output = env.initial()
         agent_state = model.initial_state(batch_size=1)
         agent_output, unused_state = model(env_output, agent_state)
@@ -377,20 +378,21 @@ def learn(
         learner_outputs = {key: tensor[:-1] for key, tensor in learner_outputs.items()}
 
         if not flags.posemb == 'noemb' and flags.use_int_rew:
-            target_pos = batch['target_pos']  # t,b,2
-            targets_pos = batch['targets_pos']  # t,b,n,2
-            agent_pos =  batch['agent_pos']  # t,b,2
+            pass
+            # target_pos = batch['target_pos']  # t,b,2
+            # targets_pos = batch['targets_pos']  # t,b,n,2
+            # agent_pos =  batch['agent_pos']  # t,b,2
 
-            if flags.posemb == 'gt':
-                dist = ((target_pos - agent_pos) ** 2).sum(-1)
-            elif flags.posemb == 'noisygt':
-                noisy_agent_pos = compute_noisy_agent_pos(targets_pos, agent_pos, flags.pos_noise)
-                dist = ((target_pos - noisy_agent_pos) ** 2).sum(-1)
+            # if flags.posemb == 'gt':
+            #     dist = ((target_pos - agent_pos) ** 2).sum(-1)
+            # elif flags.posemb == 'noisygt':
+            #     noisy_agent_pos = compute_noisy_agent_pos(targets_pos, agent_pos, flags.pos_noise)
+            #     dist = ((target_pos - noisy_agent_pos) ** 2).sum(-1)
                 
-            dist_diff = dist[:-1] - dist[1:]
-            int_rew = torch.where(dist_diff > 0.0, 0.001, 0.)
-            rewards = batch["reward"]  
-            rewards[1:] = rewards[1:] # + int_rew
+            # dist_diff = dist[:-1] - dist[1:]
+            # int_rew = torch.where(dist_diff > 0.0, 0.001, 0.)
+            # rewards = batch["reward"]  
+            # rewards[1:] = rewards[1:] + int_rew
 
             # print(agent_pos[:5, 0])
             # print(noisy_agent_pos[:5, 0])
@@ -517,7 +519,7 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
         flags.device = torch.device("cpu")
 
     env = create_env(flags)
-    env = environment.Environment(env)
+    env = environment.Environment(env, flags)
     env_output = env.initial()
     num_tars = env_output['targets_pos'].shape[-2]
     env.close()
@@ -677,7 +679,7 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
         while step < flags.total_steps:
             start_step = step
             start_time = timer()
-            time.sleep(30)
+            time.sleep(5)
 
             if timer() - last_checkpoint_time > 120 * 60:  # Save every 120 min.
                 checkpoint(step)
@@ -698,14 +700,17 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
             else:
                 mean_return = ""
             total_loss = stats.get("total_loss", float("inf"))
-            logging.info(
-                "Steps %i @ %.1f SPS. Loss %f. %sStats:\n%s",
-                step,
-                sps,
-                total_loss,
-                mean_return,
-                pprint.pformat(stats),
-            )
+            
+            # this is to know whther the learning crushes
+            if sps != 0.0:  
+                logging.info(
+                    "Steps %i @ %.1f SPS. Loss %f. %sStats:\n%s",
+                    step,
+                    sps,
+                    total_loss,
+                    mean_return,
+                    pprint.pformat(stats),
+                )
 
             '''# performance in eval mode'''
             # if (step // 250000) > counter:
@@ -763,7 +768,7 @@ def test(flags, num_episodes: int = 100):
     flags.device = torch.device(f"cuda")
 
     gym_env = create_env(flags)
-    env = environment.Environment(gym_env)
+    env = environment.Environment(gym_env, flags)
     model = Net((3, 64,64), gym_env.action_space.n, flags)
     # .to(device=flags.device)
     model.eval()
