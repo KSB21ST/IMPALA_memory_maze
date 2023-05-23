@@ -16,7 +16,7 @@
 #     --savedir "/home/jmcho/project/IMPALA_memory_maze/logs"
 
 python -m torchbeast.monobeast \
-    --env "memory_maze:MemoryMaze-15x15-ExtraObs-v0" \
+    --env "memory_maze:MemoryMaze-9x9-ExtraObs-v0" \
     --posemb "noisygt" \
     --pos_noise 0.0 \
     --num_actors 16 \

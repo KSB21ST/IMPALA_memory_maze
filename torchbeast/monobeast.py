@@ -494,7 +494,7 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
     # wandb save
     wandb.login()
     wandb.init(
-        project=f"impala_memmaze",
+        project=f"impala_{flags.env}",
         entity="junmokane",
         config=flags,
         mode=flags.wandb_mode,
