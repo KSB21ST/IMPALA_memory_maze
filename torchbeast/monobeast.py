@@ -480,7 +480,10 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
     
     assert flags.posemb in ['noemb', 'gt', 'noisygt']
     if flags.xpid is None:
-        flags.xpid = "%s/torchbeast-%s" % (flags.posemb, time.strftime("%Y%m%d-%H%M%S"))
+        if flags.posemb == 'noisygt':
+            flags.xpid = "%s_%.2f/torchbeast-%s" % (flags.posemb, flags.pos_noise, time.strftime("%Y%m%d-%H%M%S"))
+        else:
+            flags.xpid = "%s/torchbeast-%s" % (flags.posemb, time.strftime("%Y%m%d-%H%M%S"))
     plogger = file_writer.FileWriter(
         xpid=flags.xpid, xp_args=flags.__dict__, rootdir=flags.savedir
     )

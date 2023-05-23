@@ -107,10 +107,10 @@ class Environment:
         target_pos = ((target_pos / maze_len) * (self.res * maze_len)).long().float() / (self.res * maze_len)
         targets_pos = ((targets_pos / maze_len) * (self.res * maze_len)).long().float() / (self.res * maze_len)
 
-        print(agent_pos)
-        print(agent_ori_pos)
-        print(target_pos)
-        print(targets_pos)
+        # print(agent_pos)
+        # print(agent_ori_pos)
+        # print(target_pos)
+        # print(targets_pos)
 
         return dict(
             frame=initial_frame,
