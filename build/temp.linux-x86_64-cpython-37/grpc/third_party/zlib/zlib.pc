@@ -1,0 +1,13 @@
+prefix=/home/sbkim/miniconda3/envs/torchbeast
+exec_prefix=/home/sbkim/miniconda3/envs/torchbeast
+libdir=/home/sbkim/miniconda3/envs/torchbeast/lib
+sharedlibdir=/home/sbkim/miniconda3/envs/torchbeast/lib
+includedir=/home/sbkim/miniconda3/envs/torchbeast/include
+
+Name: zlib
+Description: zlib compression library
+Version: 1.2.13
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lz
+Cflags: -I${includedir}

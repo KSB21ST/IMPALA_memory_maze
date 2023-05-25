@@ -1,0 +1,11 @@
+prefix=/home/sbkim/miniconda3/envs/torchbeast
+exec_prefix=/home/sbkim/miniconda3/envs/torchbeast
+libdir=/home/sbkim/miniconda3/envs/torchbeast/lib
+includedir=/home/sbkim/miniconda3/envs/torchbeast/include
+
+Name: UTF8 Range
+Description: Google's UTF8 Library
+Version: 1.0
+Requires: absl_strings
+Libs: -L${libdir} -lutf8_validity -lutf8_range -pthread
+Cflags: -I${includedir}

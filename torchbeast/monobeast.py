@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "7"
 import argparse
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -33,9 +32,8 @@ import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning) 
 
 os.environ["OMP_NUM_THREADS"] = "1"  # Necessary for multithreading.
+# os.environ["MUJOCO_EGL_DEVICE_ID"] = "3"
 
-# if 'MUJOCO_GL' not in os.environ:
-#     os.environ['MUJOCO_GL'] = 'egl'
 
 import torch
 from torch import multiprocessing as mp
@@ -267,7 +265,13 @@ def act(
     buffers: Buffers,
     initial_agent_state_buffers,
 ):
+    
     try:
+        # flags.device = torch.device(f"cuda:{flags.gpu_n}")
+        # torch.cuda.set_device(flags.device)
+        # model.to(device=flags.device)
+        logging.info(f"in actor: cuda device:{torch.cuda.current_device()}")
+        
         logging.info("Actor %i started.", actor_index)
         timings = prof.Timings()  # Keep track of how fast things are.
 
@@ -277,6 +281,8 @@ def act(
         env = environment.Environment(gym_env, flags)
         env_output = env.initial()
         agent_state = model.initial_state(batch_size=1)
+
+        env_output = {k: t.to(device=flags.device, non_blocking=True) for k, t in env_output.items()}
         agent_output, unused_state = model(env_output, agent_state)
         while True:
             index = free_queue.get()
@@ -296,6 +302,7 @@ def act(
                 timings.reset()
 
                 with torch.no_grad():
+                    env_output = {k: t.to(device=flags.device, non_blocking=True) for k, t in env_output.items()}
                     agent_output, agent_state = model(env_output, agent_state)
 
                 timings.time("model")
@@ -353,6 +360,7 @@ def get_batch(
         t.to(device=flags.device, non_blocking=True) for t in initial_agent_state
     )
     timings.time("device")
+    logging.info(f"get batch cuda device:{torch.cuda.current_device()}")
     return batch, initial_agent_state
 
 
@@ -367,6 +375,11 @@ def learn(
     lock=threading.Lock(),  # noqa: B008
 ):
     """Performs a learning (optimization) step."""
+    # model = torch.nn.DataParallel(model, device_ids=[flags.device])
+    # flags.device = torch.device(f"cuda:{flags.gpu_n}")
+    # torch.cuda.set_device(flags.device)
+    logging.info(f"in learn: cuda device:{torch.cuda.current_device()}")
+
     with lock:
         learner_outputs, unused_state = model(batch, initial_agent_state)
 
@@ -452,6 +465,8 @@ def learn(
 
 
 def create_buffers(flags, obs_shape, num_actions, num_tars) -> Buffers:
+    # flags.device = torch.device(f"cuda:{flags.gpu_n}")
+    # torch.cuda.set_device(flags.device)
     T = flags.unroll_length
     specs = dict(
         frame=dict(size=(T + 1, *obs_shape), dtype=torch.uint8),
@@ -494,8 +509,8 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
     # wandb save
     wandb.login()
     wandb.init(
-        project=f"impala_{flags.env}",
-        entity="junmokane",
+        project=f"impala_MemoryMaze-9x9-ExtraObs-v0",
+        entity="ksb21st",
         config=flags,
         mode=flags.wandb_mode,
         name=flags.xpid,
@@ -515,7 +530,9 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
     if not flags.disable_cuda and torch.cuda.is_available():
         logging.info("Using CUDA.")
         flags.device = torch.device(f"cuda:{flags.gpu_n}")
+        os.environ["MUJOCO_EGL_DEVICE_ID"] = str(flags.gpu_n)
         torch.cuda.set_device(flags.device)
+        logging.info(f"cuda device:{torch.cuda.current_device()}")
         # flags.device = torch.device(f"cuda")
     else:
         logging.info("Not using CUDA.")
@@ -527,13 +544,12 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
     num_tars = env_output['targets_pos'].shape[-2]
     env.close()
     env = create_env(flags)
-    
-    print("$"*100)
-    print(env.observation_space.shape, env.action_space.n)
 
     model = Net(env.observation_space.shape, env.action_space.n, flags)
     eval_model = Net(env.observation_space.shape, env.action_space.n, flags)
     buffers = create_buffers(flags, env.observation_space.shape, model.num_actions, num_tars)
+    
+    model.to(device=flags.device)
 
     model.share_memory()
 
@@ -546,7 +562,6 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
         initial_agent_state_buffers.append(state)
 
     actor_processes = []
-    # ctx = mp.get_context("fork")
     ctx = mp.get_context("spawn")
     free_queue = ctx.SimpleQueue()
     full_queue = ctx.SimpleQueue()
@@ -569,7 +584,7 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
         )
         actor.start()
         actor_processes.append(actor)
-
+    
     learner_model = Net(
         env.observation_space.shape, env.action_space.n, flags
     ).to(device=flags.device)
@@ -643,6 +658,7 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
 
     for m in range(flags.num_buffers):
         free_queue.put(m)
+        
 
     threads = []
     for i in range(flags.num_learner_threads):
@@ -828,6 +844,8 @@ def test(flags, num_episodes: int = 100):
 Net = AtariNet
 
 def create_env(flags):
+    flags.device = torch.device(f"cuda:{flags.gpu_n}")
+    torch.cuda.set_device(flags.device)
     if flags.mode == "train":
         env = gym.make(flags.env)
         return atari_wrappers.wrap_pytorch(env)
