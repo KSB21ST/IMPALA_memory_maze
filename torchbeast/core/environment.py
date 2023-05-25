@@ -77,8 +77,6 @@ class Environment:
         self.flags = flags
 
     def initial(self):
-        # self.flags.device = torch.device(f"cuda:{self.flags.gpu_n}")
-        # torch.cuda.set_device(self.flags.device)
         initial_reward = torch.zeros(1, 1)
         # This supports only single-tensor actions ATM.
         initial_last_action = torch.zeros(1, 1, dtype=torch.int64)
@@ -128,8 +126,6 @@ class Environment:
         )
 
     def step(self, action):
-        # self.flags.device = torch.device(f"cuda:{self.flags.gpu_n}")
-        # torch.cuda.set_device(self.flags.device)
         reset_val, reward, done, unused_info = self.gym_env.step(action.item())
         self.episode_step += 1
         self.episode_return += reward
