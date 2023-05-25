@@ -18,8 +18,8 @@
 python -m torchbeast.monobeast \
     --env "memory_maze:MemoryMaze-9x9-ExtraObs-v0" \
     --posemb "noisygt" \
-    --pos_noise 0.0 \
-    --num_actors 16 \
+    --pos_noise 0.05 \
+    --num_actors 12 \
     --discounting 0.99 \
     --entropy_cost 0.001 \
     --batch_size 32 \
@@ -27,5 +27,5 @@ python -m torchbeast.monobeast \
     --learning_rate 2e-4 \
     --epsilon 1e-7 \
     --wandb_mode "online" \
-    --gpu_n 0 \
-    --savedir "/home/jmcho/project/IMPALA_memory_maze/logs"
+    --gpu_n 1 \
+    --savedir "../logs"

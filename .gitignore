@@ -9,5 +9,6 @@ __pycache__/
 
 sandbox/
 log/
+third_party/
 
 *.mp4

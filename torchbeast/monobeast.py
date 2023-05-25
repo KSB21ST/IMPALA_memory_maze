@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "7"
 import argparse
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -119,6 +118,8 @@ parser.add_argument("--epsilon", default=0.01, type=float,
                     help="RMSProp epsilon.")
 parser.add_argument("--grad_norm_clipping", default=40.0, type=float,
                     help="Global gradient norm clip.")
+parser.add_argument("--record", default=False,
+                    help="Record to video.")
 # yapf: enable
 
 
@@ -494,8 +495,8 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
     # wandb save
     wandb.login()
     wandb.init(
-        project=f"impala_{flags.env}",
-        entity="junmokane",
+        project=f"impala_MemoryMaze-9x9-ExtraObs-v0",
+        entity="ksb21st",
         config=flags,
         mode=flags.wandb_mode,
         name=flags.xpid,
@@ -516,6 +517,7 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
         logging.info("Using CUDA.")
         flags.device = torch.device(f"cuda:{flags.gpu_n}")
         torch.cuda.set_device(flags.device)
+        os.environ["MUJOCO_EGL_DEVICE_ID"] = str(flags.gpu_n)
         # flags.device = torch.device(f"cuda")
     else:
         logging.info("Not using CUDA.")
@@ -784,11 +786,13 @@ def test(flags, num_episodes: int = 100):
 
     # observation = {k: t.to(device=flags.device, non_blocking=True) for k, t in observation.items()}
     returns = []
-    state = model.initial_state(batch_size=1)
     ep = {'image': [], 'agent_pos': [], 'agent_dir': [], 'top_camera': [], 'maze_layout': []}
 
     for k, v in ep.items():
         v.append(observation[k])  
+
+    # observation = {k: t.to(device=flags.device, non_blocking=True) for k, t in observation.items()}
+    returns = []
 
     while len(returns) < num_episodes:
         if flags.mode == "test_render":
@@ -796,27 +800,40 @@ def test(flags, num_episodes: int = 100):
         agent_outputs = model(observation, state)
         policy_outputs, state = agent_outputs
         observation = env.step(policy_outputs["action"])
-        observation['frame'] = rearrange(resize(observation['frame'][0, 0]), 'c h w -> 1 1 c h w')
-        # observation['frame'] = resize(observation['frame'])
+        
+        if flags.record:
+            observation['frame'] = rearrange(resize(observation['frame'][0, 0]), 'c h w -> 1 1 c h w')
+            # observation['frame'] = resize(observation['frame'])
 
-        for k, v in ep.items():
-            v.append(observation[k])
-        # observation = {k: t.to(device=flags.device, non_blocking=True) for k, t in observation.items()}
-        if observation["done"].item():
-            returns.append(observation["episode_return"].item())
-            logging.info(
-                "Episode ended after %d steps. Return: %.1f",
-                observation["episode_step"].item(),
-                observation["episode_return"].item(),
-            )
             for k, v in ep.items():
-                ep[k] = np.array(v)
-            ep['image'] = rearrange(ep['image'], 'l c h w -> l h w c')
-            video = generate_video(image=ep['image'], maze_layout=ep['maze_layout'], agent_pos=ep['agent_pos'], agent_dir=ep['agent_dir'], top_camera=ep['top_camera'])
-            save_video(video, dir=f'./traj_final256{len(returns)}_{observation["episode_return"].item()}')
-            ep = {'image': [], 'agent_pos': [], 'agent_dir': [], 'top_camera': [], 'maze_layout': []}
+                v.append(observation[k])
+            # observation = {k: t.to(device=flags.device, non_blocking=True) for k, t in observation.items()}
+            if observation["done"].item():
+                returns.append(observation["episode_return"].item())
+                logging.info(
+                    "Episode ended after %d steps. Return: %.1f",
+                    observation["episode_step"].item(),
+                    observation["episode_return"].item(),
+                )
+                for k, v in ep.items():
+                    ep[k] = np.array(v)
+                ep['image'] = rearrange(ep['image'], 'l c h w -> l h w c')
+                video = generate_video(image=ep['image'], maze_layout=ep['maze_layout'], agent_pos=ep['agent_pos'], agent_dir=ep['agent_dir'], top_camera=ep['top_camera'])
+                save_video(video, dir=f'./traj_sbtest{len(returns)}_{observation["episode_return"].item()}')
+                ep = {'image': [], 'agent_pos': [], 'agent_dir': [], 'top_camera': [], 'maze_layout': []}
 
+        else:
+            if observation["done"].item():
+                returns.append(observation["episode_return"].item())
+                logging.info(
+                    "Episode ended after %d steps. Return: %.1f",
+                    observation["episode_step"].item(),
+                    observation["episode_return"].item(),
+                )
     env.close()
+    logging.info(
+        "Average returns over %i steps: %.1f", num_episodes, sum(returns) / len(returns)
+    )
 
     print(sum(returns) / len(returns))
 
