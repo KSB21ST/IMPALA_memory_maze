@@ -24,17 +24,11 @@ import traceback
 import typing
 import gym
 import numpy as np
-import wandb
-# from memorymaze.gui.recording import SaveNpzWrapper
-import memory_maze
-from einops import rearrange, repeat, reduce
-import warnings
+from einops import rearrange
 warnings.filterwarnings("ignore", category=DeprecationWarning) 
+from PIL import Image
 
 os.environ["OMP_NUM_THREADS"] = "1"  # Necessary for multithreading.
-
-# if 'MUJOCO_GL' not in os.environ:
-#     os.environ['MUJOCO_GL'] = 'egl'
 
 import torch
 from torch import multiprocessing as mp
@@ -53,8 +47,6 @@ from torchbeast.core.environment import compute_noisy_agent_pos
 # yapf: disable
 parser = argparse.ArgumentParser(description="PyTorch Scalable Agent")
 
-# parser.add_argument("--env", type=str, default="PongNoFrameskip-v4",
-#                     help="Gym environment.")
 parser.add_argument("--env", type=str, default="memory_maze:MemoryMaze-9x9-ExtraObs-v0",
                     help="Gym environment.")
 parser.add_argument("--mode", default="train",
@@ -199,7 +191,13 @@ def save_video(video, dir):
                             '-preset': 'ultrafast', '-pix_fmt': 'yuv444p'}
     )
 
+    # cnt = 0
     for frame in video:
+        # cnt += 1
+        # if(cnt % 10 == 0):
+            # img_1 = Image.fromarray(frame)
+            # img_1.show()
+            # img_1.save(f'./traj_img/trail4/traj_{cnt}.jpg','JPEG')
         vid_out.writeFrame(frame)
     vid_out.close()
     
@@ -211,12 +209,13 @@ def generate_video(image, maze_layout, agent_pos, agent_dir, top_camera):
     _, h, w, c = image.shape
     assert h==w and (h==256 or h==64)
     assert bx==by
-    agent_pose = np.concatenate((agent_pos, agent_dir), axis=1)  # [l,4]
+    # agent_pose = np.concatenate((agent_pos, agent_dir), axis=1)  # [l,4]
     margin = 32 if h == 256 else 8
     h_fig = h - margin * 2  # actual top camera size
 
     # draw pose on topdown
-    dir_len = 20 if h == 256 else 10
+    # dir_len = 20 if h == 256 else 10
+    dir_len = 0
     for j in range(l):
         
         # draw current pose
@@ -233,8 +232,8 @@ def generate_video(image, maze_layout, agent_pos, agent_dir, top_camera):
                             
             # top_camera[j, y, x] = [255, 0, 0]
 
-    # video = np.concatenate((topdown, scenes), axis=2)
     video = np.concatenate((top_camera, image), axis=2)
+    # video = np.concatenate((top_camera, image), axis=1)
     return video
 
 
@@ -380,24 +379,6 @@ def learn(
 
         if not flags.posemb == 'noemb' and flags.use_int_rew:
             pass
-            # target_pos = batch['target_pos']  # t,b,2
-            # targets_pos = batch['targets_pos']  # t,b,n,2
-            # agent_pos =  batch['agent_pos']  # t,b,2
-
-            # if flags.posemb == 'gt':
-            #     dist = ((target_pos - agent_pos) ** 2).sum(-1)
-            # elif flags.posemb == 'noisygt':
-            #     noisy_agent_pos = compute_noisy_agent_pos(targets_pos, agent_pos, flags.pos_noise)
-            #     dist = ((target_pos - noisy_agent_pos) ** 2).sum(-1)
-                
-            # dist_diff = dist[:-1] - dist[1:]
-            # int_rew = torch.where(dist_diff > 0.0, 0.001, 0.)
-            # rewards = batch["reward"]  
-            # rewards[1:] = rewards[1:] + int_rew
-
-            # print(agent_pos[:5, 0])
-            # print(noisy_agent_pos[:5, 0])
-            # print(int_rew.max(), int_rew.min())
         else:
             rewards = batch["reward"]
 
@@ -492,16 +473,6 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
         os.path.expanduser("%s/%s/" % (flags.savedir, flags.xpid))
     )
 
-    # wandb save
-    wandb.login()
-    wandb.init(
-        project=f"impala_MemoryMaze-9x9-ExtraObs-v0",
-        entity="ksb21st",
-        config=flags,
-        mode=flags.wandb_mode,
-        name=flags.xpid,
-    )
-
     if flags.num_buffers is None:  # Set sensible default for num_buffers.
         flags.num_buffers = max(2 * flags.num_actors, flags.batch_size)
     if flags.num_actors >= flags.num_buffers:
@@ -518,7 +489,6 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
         flags.device = torch.device(f"cuda:{flags.gpu_n}")
         torch.cuda.set_device(flags.device)
         os.environ["MUJOCO_EGL_DEVICE_ID"] = str(flags.gpu_n)
-        # flags.device = torch.device(f"cuda")
     else:
         logging.info("Not using CUDA.")
         flags.device = torch.device("cpu")
@@ -548,13 +518,9 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
         initial_agent_state_buffers.append(state)
 
     actor_processes = []
-    # ctx = mp.get_context("fork")
     ctx = mp.get_context("spawn")
     free_queue = ctx.SimpleQueue()
     full_queue = ctx.SimpleQueue()
-
-    # act(flags, 0, free_queue, full_queue, model, buffers, initial_agent_state_buffers,)
-    # exit()
 
     for i in range(flags.num_actors):
         actor = ctx.Process(
@@ -637,7 +603,6 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
                 to_log = dict(step=step)
                 to_log.update({k: stats[k] for k in stat_keys})
                 plogger.log(to_log)
-                # wandb.log(to_log, step=step)
                 step += T * B
 
         if i == 0:
@@ -695,13 +660,6 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
                 mean_return = (
                     "Return per episode: %.1f. " % stats["mean_episode_return"]
                 )
-
-                wandb.log({'mean_episode_return': stats["mean_episode_return"],
-                           'baseline_loss': stats['baseline_loss'],
-                           'entropy_loss': stats['entropy_loss'],
-                           'pg_loss': stats['pg_loss'],
-                           'total_loss': stats['total_loss']},
-                           step=step)
             else:
                 mean_return = ""
             total_loss = stats.get("total_loss", float("inf"))
@@ -716,34 +674,6 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
                     mean_return,
                     pprint.pformat(stats),
                 )
-
-            '''# performance in eval mode'''
-            # if (step // 250000) > counter:
-            #     counter = (step // 250000)
-            #     num_episodes = 5
-            #     # load learner_model to eval_model
-            #     eval_model.load_state_dict(learner_model.state_dict())
-            #     eval_model.eval()
-            #     gym_env = create_env(flags)
-            #     env = environment.Environment(gym_env)
-            #     observation = env.initial()
-            #     state = model.initial_state(batch_size=1)
-            #     returns = [] 
-
-            #     while len(returns) < num_episodes:
-            #         agent_outputs = eval_model(observation, state)
-            #         policy_outputs, state = agent_outputs
-            #         observation = env.step(policy_outputs["action"])
-            #         if observation["done"].item():
-            #             returns.append(observation["episode_return"].item())
-            #             logging.info(
-            #                 "Episode ended after %d steps. Return: %.1f",
-            #                 observation["episode_step"].item(),
-            #                 observation["episode_return"].item(),
-            #             )
-            #     env.close()
-            #     wandb.log({'mean_episode_return_eval': sum(returns) / len(returns)}, step=counter*250000)
-            #     logging.info("Average returns over %i steps: %.1f", num_episodes, sum(returns) / len(returns))
 
     except KeyboardInterrupt:
         return  # Try joining actors then quit.
@@ -761,20 +691,20 @@ def train(flags):  # pylint: disable=too-many-branches, too-many-statements
     plogger.close()
 
 
-def test(flags, num_episodes: int = 100):
+def test(flags, num_episodes: int = 1): #100
     if flags.xpid is None:
-        checkpointpath = "../../logs/memory_maze/torchbeast-20230428-190628/model.tar"
+        checkpointpath = "../logs/latest/model.tar"
     else:
         checkpointpath = os.path.expandvars(
             os.path.expanduser("%s/%s/%s" % (flags.savedir, flags.xpid, "model.tar"))
         )
-    # flags.device = torch.device(f"cuda:{flags.gpu_n}")
-    # torch.cuda.set_device(flags.device)
-    flags.device = torch.device(f"cuda")
+    flags.device = torch.device(f"cuda:{flags.gpu_n}")
+    torch.cuda.set_device(flags.device)
+    os.environ["MUJOCO_EGL_DEVICE_ID"] = str(flags.gpu_n)
 
     gym_env = create_env(flags)
     env = environment.Environment(gym_env, flags)
-    model = Net((3, 64,64), gym_env.action_space.n, flags)
+    model = Net((3, 64, 64), gym_env.action_space.n, flags)
     # .to(device=flags.device)
     model.eval()
     checkpoint = torch.load(checkpointpath, map_location="cpu")
@@ -784,30 +714,32 @@ def test(flags, num_episodes: int = 100):
     resize = transforms.Resize(64)
     observation['frame'] = rearrange(resize(observation['frame'][0, 0]), 'c h w -> 1 1 c h w')
 
-    # observation = {k: t.to(device=flags.device, non_blocking=True) for k, t in observation.items()}
     returns = []
     ep = {'image': [], 'agent_pos': [], 'agent_dir': [], 'top_camera': [], 'maze_layout': []}
-
     for k, v in ep.items():
-        v.append(observation[k])  
-
-    # observation = {k: t.to(device=flags.device, non_blocking=True) for k, t in observation.items()}
+        if(k == 'agent_pos' or k == 'agent_dir'):
+            _k = torch.flatten(observation[k])
+            v.append(_k.numpy())
+        else:
+            v.append(observation[k]) 
     returns = []
 
     while len(returns) < num_episodes:
         if flags.mode == "test_render":
             env.gym_env.render()
-        agent_outputs = model(observation, state)
+        agent_outputs = model(observation)
         policy_outputs, state = agent_outputs
         observation = env.step(policy_outputs["action"])
         
         if flags.record:
             observation['frame'] = rearrange(resize(observation['frame'][0, 0]), 'c h w -> 1 1 c h w')
-            # observation['frame'] = resize(observation['frame'])
 
             for k, v in ep.items():
-                v.append(observation[k])
-            # observation = {k: t.to(device=flags.device, non_blocking=True) for k, t in observation.items()}
+                if(k == 'agent_pos' or k == 'agent_dir'):
+                    _k = torch.flatten(observation[k])
+                    v.append(_k.numpy())
+                else:
+                    v.append(observation[k])
             if observation["done"].item():
                 returns.append(observation["episode_return"].item())
                 logging.info(
@@ -819,7 +751,7 @@ def test(flags, num_episodes: int = 100):
                     ep[k] = np.array(v)
                 ep['image'] = rearrange(ep['image'], 'l c h w -> l h w c')
                 video = generate_video(image=ep['image'], maze_layout=ep['maze_layout'], agent_pos=ep['agent_pos'], agent_dir=ep['agent_dir'], top_camera=ep['top_camera'])
-                save_video(video, dir=f'./traj_sbtest{len(returns)}_{observation["episode_return"].item()}')
+                save_video(video, dir=f'./video/noisygt_0.50/traj_{len(returns)}_{observation["episode_return"].item()}')
                 ep = {'image': [], 'agent_pos': [], 'agent_dir': [], 'top_camera': [], 'maze_layout': []}
 
         else:
@@ -849,8 +781,7 @@ def create_env(flags):
         env = gym.make(flags.env)
         return atari_wrappers.wrap_pytorch(env)
     else:
-        # env = gym.make('MemoryMaze-Custom-v0')
-        env = gym.make(flags.env)
+        env = gym.make('MemoryMaze-Custom-v0')
         return atari_wrappers.wrap_pytorch_test(env)
     
 

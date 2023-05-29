@@ -1,5 +1,6 @@
 logs
 wandb
+torchbeast2
 
 .*
 !.gitignore
@@ -10,5 +11,11 @@ __pycache__/
 sandbox/
 log/
 third_party/
+video/
+traj_img/
+rar/
 
 *.mp4
+*.png
+*.out
+*.rar

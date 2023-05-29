@@ -356,7 +356,6 @@ class ImageToPyTorchTest(gym.ObservationWrapper):
         )
 
     def observation(self, observation):
-        # print(observation)
         observation['image'] = np.transpose(observation['image'], axes=(2, 0, 1))
         return observation
 

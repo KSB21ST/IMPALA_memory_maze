@@ -1,666 +1,224 @@
-[INFO:4193631 __init__:85 2023-05-01 15:09:09,251] MUJOCO_GL=egl, attempting to import specified OpenGL backend.
-[DEBUG:4193631 ctypesloader:65 2023-05-01 15:09:09,280] Loaded libEGL.so => libEGL.so.1 <CDLL 'libEGL.so.1', handle 67a17a0 at 0x7f437c279a90>
-[DEBUG:4193631 ctypesloader:65 2023-05-01 15:09:09,281] Loaded libOpenGL.so => libOpenGL.so.0 <CDLL 'libOpenGL.so.0', handle 67a4a00 at 0x7f437c279c90>
-[INFO:4193631 acceleratesupport:17 2023-05-01 15:09:09,282] No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
-[DEBUG:4193631 ctypesloader:65 2023-05-01 15:09:09,293] Loaded libOpenGL.so => libOpenGL.so.0 <CDLL 'libOpenGL.so.0', handle 67a4a00 at 0x7f437c160690>
-[DEBUG:4193631 ctypesloader:65 2023-05-01 15:09:09,336] Loaded libOpenGL.so => libOpenGL.so.0 <CDLL 'libOpenGL.so.0', handle 67a4a00 at 0x7f43788b9cd0>
-[INFO:4193631 __init__:31 2023-05-01 15:09:09,337] MuJoCo library version is: 2.3.5
-[DEBUG:4193631 base:52 2023-05-01 15:09:11,145] Using render executor class: PassthroughRenderExecutor
-[DEBUG:4193631 mazes:210 2023-05-01 15:09:12,056] GENERATED MAZE:
-00011112222
-0  G      2
-0 P 1     2
-3   4GP   5
-3 3444455 5
-3         5
-3 3444455 5
-6  G7     8
-6  P7  P888
-6     G 888
-66677778888
-
-[DEBUG:4193631 base:52 2023-05-01 15:09:13,733] Using render executor class: PassthroughRenderExecutor
-[WARNING:4193631 entity:577 2023-05-01 15:09:14,660] Cannot set velocity on Entity with no free joint.
-[DEBUG:4193631 mazes:210 2023-05-01 15:09:39,907] GENERATED MAZE:
-00011112222
-0      G  2
-0  P G1   2
-3     4P  5
-3 344 455 5
-3         5
-3P  44455 5
-6   7P    8
-6G  7   888
-6     G 888
-66677778888
-
-[DEBUG:4193631 base:52 2023-05-01 15:09:42,128] Using render executor class: PassthroughRenderExecutor
-[WARNING:4193631 entity:577 2023-05-01 15:09:43,264] Cannot set velocity on Entity with no free joint.
-[INFO:4193631 monobeast:566 2023-05-01 15:09:43,288] Episode ended after 1000 steps. Return: 15.0
-[INFO:857 __init__:85 2023-05-01 15:12:08,051] MUJOCO_GL=egl, attempting to import specified OpenGL backend.
-[DEBUG:857 ctypesloader:65 2023-05-01 15:12:08,086] Loaded libEGL.so => libEGL.so.1 <CDLL 'libEGL.so.1', handle 68cae50 at 0x7fd1da51fb90>
-[DEBUG:857 ctypesloader:65 2023-05-01 15:12:08,088] Loaded libOpenGL.so => libOpenGL.so.0 <CDLL 'libOpenGL.so.0', handle 68ce0b0 at 0x7fd1da51fd90>
-[INFO:857 acceleratesupport:17 2023-05-01 15:12:08,092] No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
-[DEBUG:857 ctypesloader:65 2023-05-01 15:12:08,110] Loaded libOpenGL.so => libOpenGL.so.0 <CDLL 'libOpenGL.so.0', handle 68ce0b0 at 0x7fd1da406710>
-[DEBUG:857 ctypesloader:65 2023-05-01 15:12:08,162] Loaded libOpenGL.so => libOpenGL.so.0 <CDLL 'libOpenGL.so.0', handle 68ce0b0 at 0x7fd1d6af1110>
-[INFO:857 __init__:31 2023-05-01 15:12:08,164] MuJoCo library version is: 2.3.5
-[DEBUG:857 base:52 2023-05-01 15:12:09,504] Using render executor class: PassthroughRenderExecutor
-[DEBUG:857 mazes:210 2023-05-01 15:12:10,528] GENERATED MAZE:
-00011112222
-0     1P  2
-0GP   1 G 2
-3         5
-333 444 555
-333       5
-333 44455 5
-6P G7G    8
-6   7P  888
-6       888
-66677778888
-
-[DEBUG:857 base:52 2023-05-01 15:12:11,501] Using render executor class: PassthroughRenderExecutor
-[WARNING:857 entity:577 2023-05-01 15:12:11,967] Cannot set velocity on Entity with no free joint.
-[DEBUG:857 mazes:210 2023-05-01 15:12:36,959] GENERATED MAZE:
-00011112222
-0 P       2
-0   1  P2 2
-3G  4  G5 5
-3 3 4 4 5 5
-3 3G P    5
-3 3   4 G 5
-6     7   8
-666   7P  8
-666   7   8
-66677778888
-
-[DEBUG:857 base:52 2023-05-01 15:12:38,140] Using render executor class: PassthroughRenderExecutor
-[WARNING:857 entity:577 2023-05-01 15:12:38,662] Cannot set velocity on Entity with no free joint.
-[INFO:857 monobeast:566 2023-05-01 15:12:38,675] Episode ended after 1000 steps. Return: 15.0
-[DEBUG:857 mazes:210 2023-05-01 15:13:02,197] GENERATED MAZE:
-00011112222
-0       222
-0 01111 222
-3   P   G 5
-3 3 G 4 P 5
-3 3   4   5
-3 344 4 555
-6    P7   8
-6     7G P8
-6G        8
-66677778888
-
-[DEBUG:857 base:52 2023-05-01 15:13:03,957] Using render executor class: PassthroughRenderExecutor
-[WARNING:857 entity:577 2023-05-01 15:13:04,994] Cannot set velocity on Entity with no free joint.
-[INFO:857 monobeast:566 2023-05-01 15:13:05,007] Episode ended after 1000 steps. Return: 12.0
-[DEBUG:857 mazes:210 2023-05-01 15:13:28,572] GENERATED MAZE:
-00011112222
-0  P1   G 2
-0  G1 1   2
-3     4 P 5
-333 4 4 5 5
-3   4  P5 5
-3   4   5 5
-6 P    G8 8
-6   7 788 8
-6 G       8
-66677778888
-
-[DEBUG:857 base:52 2023-05-01 15:13:30,161] Using render executor class: PassthroughRenderExecutor
-[WARNING:857 entity:577 2023-05-01 15:13:30,790] Cannot set velocity on Entity with no free joint.
-[INFO:857 monobeast:566 2023-05-01 15:13:30,811] Episode ended after 1000 steps. Return: 17.0
-[DEBUG:857 mazes:210 2023-05-01 15:13:54,134] GENERATED MAZE:
-00011112222
-00011   P 2
-00011 1   2
-3        G5
-3 P G 4 555
-3      G  5
-3 344 4   5
-6   7     8
-6 P 7 7 P 8
-6 G   7   8
-66677778888
-
-[DEBUG:857 base:52 2023-05-01 15:13:55,238] Using render executor class: PassthroughRenderExecutor
-[WARNING:857 entity:577 2023-05-01 15:13:55,664] Cannot set velocity on Entity with no free joint.
-[INFO:857 monobeast:566 2023-05-01 15:13:55,680] Episode ended after 1000 steps. Return: 15.0
-[DEBUG:857 mazes:210 2023-05-01 15:14:18,673] GENERATED MAZE:
-00011112222
-0     1   2
-0     1   2
-3G P    PG5
-3 344 4   5
-3 G       5
-3P  4 4 5 5
-6         8
-666 7P  888
-666    G888
-66677778888
-
-[DEBUG:857 base:52 2023-05-01 15:14:19,785] Using render executor class: PassthroughRenderExecutor
-[WARNING:857 entity:577 2023-05-01 15:14:20,155] Cannot set velocity on Entity with no free joint.
-[INFO:857 monobeast:566 2023-05-01 15:14:20,167] Episode ended after 1000 steps. Return: 23.0
-[DEBUG:857 mazes:210 2023-05-01 15:14:44,042] GENERATED MAZE:
-00011112222
-0         2
-0 0111122 2
-3    G4   5
-3    P4 G 5
-3       P 5
-3 3 44455 5
-6      G  8
-666 P 7   8
-666 G 7  P8
-66677778888
-
-[DEBUG:857 base:52 2023-05-01 15:14:44,929] Using render executor class: PassthroughRenderExecutor
-[WARNING:857 entity:577 2023-05-01 15:14:45,679] Cannot set velocity on Entity with no free joint.
-[INFO:857 monobeast:566 2023-05-01 15:14:45,692] Episode ended after 1000 steps. Return: 20.0
-[DEBUG:857 mazes:210 2023-05-01 15:15:10,691] GENERATED MAZE:
-00011112222
-0   G 1PG 2
-0     1   2
-3   P     5
-33344 455 5
-333   4  P5
-333 4 4G  5
-6P  7     8
-6   777   8
-6  G777   8
-66677778888
-
-[DEBUG:857 base:52 2023-05-01 15:15:11,838] Using render executor class: PassthroughRenderExecutor
-[WARNING:857 entity:577 2023-05-01 15:15:12,350] Cannot set velocity on Entity with no free joint.
-[INFO:857 monobeast:566 2023-05-01 15:15:12,374] Episode ended after 1000 steps. Return: 16.0
-[DEBUG:857 mazes:210 2023-05-01 15:15:35,447] GENERATED MAZE:
-00011112222
-000P G   P2
-000   1   2
-3     4   5
-3 344 4 G 5
-3    G    5
-3 3   455 5
-6 6 P     8
-6 67777   8
-6      PG 8
-66677778888
-
-[DEBUG:857 base:52 2023-05-01 15:15:36,637] Using render executor class: PassthroughRenderExecutor
-[WARNING:857 entity:577 2023-05-01 15:15:38,034] Cannot set velocity on Entity with no free joint.
-[INFO:857 monobeast:566 2023-05-01 15:15:38,056] Episode ended after 1000 steps. Return: 0.0
-[DEBUG:857 mazes:210 2023-05-01 15:16:02,356] GENERATED MAZE:
-00011112222
-0        G2
-0 01111 P 2
-3         5
-3 3   4 555
-3 3 GP    5
-3 3 444G  5
-6    G7P  8
-666 P 7   8
-666       8
-66677778888
-
-[DEBUG:857 base:52 2023-05-01 15:16:03,811] Using render executor class: PassthroughRenderExecutor
-[WARNING:857 entity:577 2023-05-01 15:16:04,537] Cannot set velocity on Entity with no free joint.
-[INFO:857 monobeast:566 2023-05-01 15:16:04,555] Episode ended after 1000 steps. Return: 16.0
-[DEBUG:857 mazes:210 2023-05-01 15:16:28,775] GENERATED MAZE:
-00011112222
-000    P  2
-000  P1   2
-3   G 4  G5
-3 3 4 4 5 5
-3P        5
-3   4P G5 5
-6 G 7   8 8
-666 77788 8
-666       8
-66677778888
-
-[DEBUG:857 base:52 2023-05-01 15:16:29,993] Using render executor class: PassthroughRenderExecutor
-[WARNING:857 entity:577 2023-05-01 15:16:31,327] Cannot set velocity on Entity with no free joint.
-[INFO:857 monobeast:566 2023-05-01 15:16:31,351] Episode ended after 1000 steps. Return: 13.0
-Traceback (most recent call last):
-  File "/home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/runpy.py", line 193, in _run_module_as_main
-    "__main__", mod_spec)
-  File "/home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/runpy.py", line 85, in _run_code
-    exec(code, run_globals)
-  File "/home/sbkim/torchbeast/torchbeast/monobeast.py", line 722, in <module>
-  File "/home/sbkim/torchbeast/torchbeast/monobeast.py", line 697, in main
-  File "/home/sbkim/torchbeast/torchbeast/monobeast.py", line 559, in test
-  File "/home/sbkim/torchbeast/torchbeast/core/environment.py", line 48, in step
-  File "/home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/site-packages/gym/core.py", line 261, in step
-    observation, reward, done, info = self.env.step(action)
-  File "/home/sbkim/torchbeast/memorymaze/gui/recording.py", line 31, in step
-  File "/home/sbkim/torchbeast/memorymaze/gui/recording.py", line 37, in _save_npz
-  File "/home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/pathlib.py", line 1208, in open
-    opener=self._opener)
-  File "/home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/pathlib.py", line 1063, in _opener
-    return self._accessor.open(self, flags, mode)
-FileNotFoundError: [Errno 2] No such file or directory: '../logs/memory_maze/video_output/20230501T151631-r8-1000.npz'
-Saved ../logs/memory_maze/video_output/20230501T151211-r15-1000.npz {'image': (1001, 64, 64, 3), 'target_color': (1001, 3), 'agent_pos': (1001, 2), 'agent_dir': (1001, 2), 'targets_vec': (1001, 3, 2), 'targets_pos': (1001, 3, 2), 'target_vec': (1001, 2), 'target_pos': (1001, 2), 'maze_layout': (1001, 9, 9), 'action': (1001, 6), 'reward': (1001,), 'terminal': (1001,), 'reset': (1001,)}
-Saved ../logs/memory_maze/video_output/20230501T151211-r15-1000.mp4
-Saved ../logs/memory_maze/video_output/20230501T151238-r12-1000.npz {'image': (1001, 64, 64, 3), 'target_color': (1001, 3), 'agent_pos': (1001, 2), 'agent_dir': (1001, 2), 'targets_vec': (1001, 3, 2), 'targets_pos': (1001, 3, 2), 'target_vec': (1001, 2), 'target_pos': (1001, 2), 'maze_layout': (1001, 9, 9), 'action': (1001, 6), 'reward': (1001,), 'terminal': (1001,), 'reset': (1001,)}
-Saved ../logs/memory_maze/video_output/20230501T151238-r12-1000.mp4
-Saved ../logs/memory_maze/video_output/20230501T151305-r17-1000.npz {'image': (1001, 64, 64, 3), 'target_color': (1001, 3), 'agent_pos': (1001, 2), 'agent_dir': (1001, 2), 'targets_vec': (1001, 3, 2), 'targets_pos': (1001, 3, 2), 'target_vec': (1001, 2), 'target_pos': (1001, 2), 'maze_layout': (1001, 9, 9), 'action': (1001, 6), 'reward': (1001,), 'terminal': (1001,), 'reset': (1001,)}
-Saved ../logs/memory_maze/video_output/20230501T151305-r17-1000.mp4
-Saved ../logs/memory_maze/video_output/20230501T151330-r15-1000.npz {'image': (1001, 64, 64, 3), 'target_color': (1001, 3), 'agent_pos': (1001, 2), 'agent_dir': (1001, 2), 'targets_vec': (1001, 3, 2), 'targets_pos': (1001, 3, 2), 'target_vec': (1001, 2), 'target_pos': (1001, 2), 'maze_layout': (1001, 9, 9), 'action': (1001, 6), 'reward': (1001,), 'terminal': (1001,), 'reset': (1001,)}
-Saved ../logs/memory_maze/video_output/20230501T151330-r15-1000.mp4
-Saved ../logs/memory_maze/video_output/20230501T151355-r23-1000.npz {'image': (1001, 64, 64, 3), 'target_color': (1001, 3), 'agent_pos': (1001, 2), 'agent_dir': (1001, 2), 'targets_vec': (1001, 3, 2), 'targets_pos': (1001, 3, 2), 'target_vec': (1001, 2), 'target_pos': (1001, 2), 'maze_layout': (1001, 9, 9), 'action': (1001, 6), 'reward': (1001,), 'terminal': (1001,), 'reset': (1001,)}
-Saved ../logs/memory_maze/video_output/20230501T151355-r23-1000.mp4
-Saved ../logs/memory_maze/video_output/20230501T151420-r20-1000.npz {'image': (1001, 64, 64, 3), 'target_color': (1001, 3), 'agent_pos': (1001, 2), 'agent_dir': (1001, 2), 'targets_vec': (1001, 3, 2), 'targets_pos': (1001, 3, 2), 'target_vec': (1001, 2), 'target_pos': (1001, 2), 'maze_layout': (1001, 9, 9), 'action': (1001, 6), 'reward': (1001,), 'terminal': (1001,), 'reset': (1001,)}
-Saved ../logs/memory_maze/video_output/20230501T151420-r20-1000.mp4
-Saved ../logs/memory_maze/video_output/20230501T151445-r16-1000.npz {'image': (1001, 64, 64, 3), 'target_color': (1001, 3), 'agent_pos': (1001, 2), 'agent_dir': (1001, 2), 'targets_vec': (1001, 3, 2), 'targets_pos': (1001, 3, 2), 'target_vec': (1001, 2), 'target_pos': (1001, 2), 'maze_layout': (1001, 9, 9), 'action': (1001, 6), 'reward': (1001,), 'terminal': (1001,), 'reset': (1001,)}
-Saved ../logs/memory_maze/video_output/20230501T151445-r16-1000.mp4
-Saved ../logs/memory_maze/video_output/20230501T151512-r0-1000.npz {'image': (1001, 64, 64, 3), 'target_color': (1001, 3), 'agent_pos': (1001, 2), 'agent_dir': (1001, 2), 'targets_vec': (1001, 3, 2), 'targets_pos': (1001, 3, 2), 'target_vec': (1001, 2), 'target_pos': (1001, 2), 'maze_layout': (1001, 9, 9), 'action': (1001, 6), 'reward': (1001,), 'terminal': (1001,), 'reset': (1001,)}
-Saved ../logs/memory_maze/video_output/20230501T151512-r0-1000.mp4
-Saved ../logs/memory_maze/video_output/20230501T151538-r16-1000.npz {'image': (1001, 64, 64, 3), 'target_color': (1001, 3), 'agent_pos': (1001, 2), 'agent_dir': (1001, 2), 'targets_vec': (1001, 3, 2), 'targets_pos': (1001, 3, 2), 'target_vec': (1001, 2), 'target_pos': (1001, 2), 'maze_layout': (1001, 9, 9), 'action': (1001, 6), 'reward': (1001,), 'terminal': (1001,), 'reset': (1001,)}
-Saved ../logs/memory_maze/video_output/20230501T151538-r16-1000.mp4
-Saved ../logs/memory_maze/video_output/20230501T151604-r13-1000.npz {'image': (1001, 64, 64, 3), 'target_color': (1001, 3), 'agent_pos': (1001, 2), 'agent_dir': (1001, 2), 'targets_vec': (1001, 3, 2), 'targets_pos': (1001, 3, 2), 'target_vec': (1001, 2), 'target_pos': (1001, 2), 'maze_layout': (1001, 9, 9), 'action': (1001, 6), 'reward': (1001,), 'terminal': (1001,), 'reset': (1001,)}
-Saved ../logs/memory_maze/video_output/20230501T151604-r13-1000.mp4
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-WARNING:absl:Cannot set velocity on Entity with no free joint.
-(1001, 64, 64, 3) (1001, 64, 64, 3) (1001, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-(1000, 64, 64, 3) (1000, 64, 64, 3) (1000, 2)
-15.58
+**************noise 0.05**********************
+INFO:absl:MUJOCO_GL=egl, attempting to import specified OpenGL backend.
+INFO:OpenGL.acceleratesupport:No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+INFO:absl:MuJoCo library version is: 2.3.5
 /home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: /home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/site-packages/torchvision/image.so: undefined symbol: _ZN5torch3jit17parseSchemaOrNameERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
   warn(f"Failed to load image Python extension: {e}")
 WARNING:absl:Cannot set velocity on Entity with no free joint.
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 3.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 5.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 9.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 5.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 13.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 3.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 26.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 8.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 22.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 17.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 3.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 12.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 10.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 3.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 15.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 1.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 3.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 15.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 17.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 13.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 15.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 19.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 4.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 10.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 7.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 21.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 1.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 22.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 13.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 4.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 8.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 8.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 16.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 13.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 2.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 3.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 18.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 0.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 17.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 3.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 17.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 13.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 0.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 18.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 9.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 16.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 1.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 5.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 7.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 21.0
+INFO:root:Average returns over 50 steps: 10.3
+INFO:root:Average returns over 50 steps: 10.3
+Namespace(alpha=0.99, baseline_cost=0.5, batch_size=32, disable_checkpoint=False, disable_cuda=False, discounting=0.99, entropy_cost=0.001, env='memory_maze:MemoryMaze-15x15-ExtraObs-v0', epsilon=1e-07, gpu_n=3, grad_norm_clipping=40.0, learning_rate=0.0002, mode='test', momentum=0, num_actors=12, num_buffers=None, num_learner_threads=2, pos_noise=0.05, posemb='noisygt', record='True', reward_clipping='abs_one', savedir='../logs', total_steps=100000000, unroll_length=100, use_int_rew=False, use_lstm=False, wandb_mode='online', xpid=None)
+10.28
+
+**************noise 0.50**********************
+Namespace(alpha=0.99, baseline_cost=0.5, batch_size=32, disable_checkpoint=False, disable_cuda=False, discounting=0.99, entropy_cost=0.001, env='memory_maze:MemoryMaze-15x15-ExtraObs-v0', epsilon=1e-07, gpu_n=3, grad_norm_clipping=40.0, learning_rate=0.0002, mode='test', momentum=0, num_actors=12, num_buffers=None, num_learner_threads=2, pos_noise=0.5, posemb='noisygt', record='True', reward_clipping='abs_one', savedir='../logs', total_steps=100000000, unroll_length=100, use_int_rew=False, use_lstm=False, wandb_mode='online', xpid=None)
+INFO:absl:MUJOCO_GL=egl, attempting to import specified OpenGL backend.
+INFO:OpenGL.acceleratesupport:No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+INFO:absl:MuJoCo library version is: 2.3.5
+/home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: /home/sbkim/miniconda3/envs/torchbeast/lib/python3.7/site-packages/torchvision/image.so: undefined symbol: _ZN5torch3jit17parseSchemaOrNameERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+  warn(f"Failed to load image Python extension: {e}")
 WARNING:absl:Cannot set velocity on Entity with no free joint.
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 2.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 8.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 26.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 3.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 6.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 9.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 6.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 15.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 22.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 5.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 22.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 18.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 3.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 4.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 13.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 10.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 3.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 6.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 2.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 2.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 16.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 6.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 25.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 2.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 23.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 7.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 1.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 8.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 7.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 5.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 2.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 8.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 18.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 11.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 9.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 23.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 23.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 14.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 22.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 5.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 17.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 7.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 10.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 5.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 10.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 3.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 1.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 19.0
 WARNING:absl:Cannot set velocity on Entity with no free joint.
-(1001, 256, 256, 3) (1001, 256, 256, 3) (1001, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-(1000, 256, 256, 3) (1000, 256, 256, 3) (1000, 2)
-14.71
+INFO:root:Episode ended after 1000 steps. Return: 14.0
+WARNING:absl:Cannot set velocity on Entity with no free joint.
+INFO:root:Episode ended after 1000 steps. Return: 12.0
+INFO:root:Average returns over 50 steps: 10.4
+INFO:root:Average returns over 50 steps: 10.4
+Namespace(alpha=0.99, baseline_cost=0.5, batch_size=32, disable_checkpoint=False, disable_cuda=False, discounting=0.99, entropy_cost=0.001, env='memory_maze:MemoryMaze-15x15-ExtraObs-v0', epsilon=1e-07, gpu_n=3, grad_norm_clipping=40.0, learning_rate=0.0002, mode='test', momentum=0, num_actors=12, num_buffers=None, num_learner_threads=2, pos_noise=0.5, posemb='noisygt', record='True', reward_clipping='abs_one', savedir='../logs', total_steps=100000000, unroll_length=100, use_int_rew=False, use_lstm=False, wandb_mode='online', xpid=None)
+10.36

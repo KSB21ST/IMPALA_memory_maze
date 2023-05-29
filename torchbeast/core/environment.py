@@ -98,6 +98,7 @@ class Environment:
         agent_dir = torch.tensor(reset_val['agent_dir']).float().view(1, 1, 2)
         target_pos = torch.tensor(reset_val['target_pos']).float().view(1, 1, 2) 
         targets_pos = torch.tensor(reset_val['targets_pos']).float().view(1, 1, num_tars, 2)
+        
         if self.flags.posemb == 'noisygt':
             agent_pos = compute_noisy_agent_pos(targets_pos, agent_pos, self.flags.pos_noise)        
         
@@ -107,23 +108,35 @@ class Environment:
         target_pos = ((target_pos / maze_len) * (self.res * maze_len)).long().float() / (self.res * maze_len)
         targets_pos = ((targets_pos / maze_len) * (self.res * maze_len)).long().float() / (self.res * maze_len)
 
-        # print(agent_pos)
-        # print(agent_ori_pos)
-        # print(target_pos)
-        # print(targets_pos)
-
-        return dict(
-            frame=initial_frame,
-            reward=initial_reward,
-            done=initial_done,
-            episode_return=self.episode_return,
-            episode_step=self.episode_step,
-            last_action=initial_last_action,
-            agent_pos=agent_pos,
-            agent_dir=agent_dir,
-            target_pos=target_pos,
-            targets_pos=targets_pos,
-        )
+        if self.flags.record:
+            return dict(
+                    frame=initial_frame,
+                    reward=initial_reward,
+                    done=initial_done,
+                    episode_return=self.episode_return,
+                    episode_step=self.episode_step,
+                    last_action=initial_last_action,
+                    agent_pos=agent_pos,
+                    agent_dir=agent_dir,
+                    target_pos=target_pos,
+                    targets_pos=targets_pos,
+                    image=reset_val['image'],
+                    top_camera=reset_val['top_camera'],
+                    maze_layout=reset_val['maze_layout'],
+                )
+        else:
+            return dict(
+                frame=initial_frame,
+                reward=initial_reward,
+                done=initial_done,
+                episode_return=self.episode_return,
+                episode_step=self.episode_step,
+                last_action=initial_last_action,
+                agent_pos=agent_pos,
+                agent_dir=agent_dir,
+                target_pos=target_pos,
+                targets_pos=targets_pos,
+            )
 
     def step(self, action):
         reset_val, reward, done, unused_info = self.gym_env.step(action.item())
@@ -147,18 +160,35 @@ class Environment:
         target_pos = torch.tensor(reset_val['target_pos']).float().view(1, 1, 2) / maze_len
         targets_pos = torch.tensor(reset_val['targets_pos']).float().view(1, 1, num_tars, 2) / maze_len
 
-        return dict(
-            frame=frame,
-            reward=reward,
-            done=done,
-            episode_return=episode_return,
-            episode_step=episode_step,
-            last_action=action,
-            agent_pos=agent_pos,
-            agent_dir=agent_dir,
-            target_pos=target_pos,
-            targets_pos=targets_pos,
-        )
+        if self.flags.record:
+            return dict(
+                frame=frame,
+                reward=reward,
+                done=done,
+                episode_return=episode_return,
+                episode_step=episode_step,
+                last_action=action,
+                agent_pos=agent_pos,
+                agent_dir=agent_dir,
+                target_pos=target_pos,
+                targets_pos=targets_pos,
+                image=reset_val['image'],
+                top_camera=reset_val['top_camera'],
+                maze_layout=reset_val['maze_layout'],
+            )
+        else:
+            return dict(
+                frame=frame,
+                reward=reward,
+                done=done,
+                episode_return=episode_return,
+                episode_step=episode_step,
+                last_action=action,
+                agent_pos=agent_pos,
+                agent_dir=agent_dir,
+                target_pos=target_pos,
+                targets_pos=targets_pos,
+            )
 
     def close(self):
         self.gym_env.close()
