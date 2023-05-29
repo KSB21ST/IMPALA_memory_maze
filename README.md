@@ -15,6 +15,7 @@ import gym
 
 env = gym.make('MemoryMaze-Custom-v0')
 ```
+We also register [additional variants](https://github.com/KSB21ST/IMPALA_memory_maze/blob/torchbeast_submit/memory_maze/__init__.py) of the environment that can be useful in certain scenarios.
 
 # TorchBeast
 A PyTorch implementation of [IMPALA: Scalable Distributed
