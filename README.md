@@ -13,10 +13,7 @@ You can create the environment using the [Gym](https://github.com/openai/gym) in
 !pip install gym
 import gym
 
-env = gym.make('memory_maze:MemoryMaze-9x9-v0')
-env = gym.make('memory_maze:MemoryMaze-11x11-v0')
-env = gym.make('memory_maze:MemoryMaze-13x13-v0')
-env = gym.make('memory_maze:MemoryMaze-15x15-v0')
+env = gym.make('MemoryMaze-Custom-v0')
 ```
 
 # TorchBeast
