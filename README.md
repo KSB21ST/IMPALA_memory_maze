@@ -4,7 +4,7 @@ Pleas refer to the public repository of [Memory maze](https://github.com/jurgisp
 Then set up our custom environment based on [Memory maze](https://github.com/jurgisp/memory-maze),
 
 ```shell
-$ python steup.py install
+$ python setup.py install
 ```
 ## Gym Interface
 You can create the environment using the [Gym](https://github.com/openai/gym) interface:
