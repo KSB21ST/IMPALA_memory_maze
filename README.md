@@ -42,7 +42,7 @@ $ pip install -r requirements.txt
 Then run MonoBeast, e.g. on the [Memory Maze](https://github.com/jurgisp/memory-maze):
 
 ```shell
-$ python -m torchbeast.monobeast --env "memory_maze:MemoryMaze-15x15-ExtraObs-v0"
+$ python -m torchbeast.monobeast --env "memory_maze:MemoryMaze-9x9-ExtraObs-v0"
 ```
 
 By default, MonoBeast uses only a few actors (each with their instance
@@ -51,7 +51,7 @@ beefy machine!):
 
 ```shell
 $ python -m torchbeast.monobeast \
-    --env "memory_maze:MemoryMaze-15x15-ExtraObs-v0" \
+    --env "memory_maze:MemoryMaze-9x9-ExtraObs-v0" \
     --posemb "noisygt" \
     --pos_noise 0.0 \
     --num_actors 12 \
@@ -72,7 +72,7 @@ $ python -m torchbeast.monobeast \
     --posemb "noisygt" \
     --mode test \
     --record True \
-    --env "memory_maze:MemoryMaze-15x15-ExtraObs-v0" \
+    --env "memory_maze:MemoryMaze-9x9-ExtraObs-v0" \
     --pos_noise 0.0 \
     --num_actors 12 \
     --discounting 0.99 \
